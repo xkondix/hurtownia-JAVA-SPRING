@@ -1,37 +1,49 @@
 package com.kowalczyk.hurtownia.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @Entity
 @Table(name="product")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id_product")
-    private final Long idProduct;
+    @Column
+    private Long id;
 
-    @Column(name = "name_of_product")
+    @Column
     private final String nameOfProduct;
 
-    @Column(name = "brand")
+    @Column
     private final String brand;
 
-    @Column(name = "price_per_item")
+    @Column
     private final Double pricePerItem;
 
-    @Column(name = "product_code")
+    @Column
     private final String productCode;
 
-    @Column(name = "id_category")
-    private final Long idCategory;
+    @ManyToOne()
+    private Category category;
+
+    //@Column(name = "category", insertable = false, updatable = false)
+    //private final Long categoryId;
 
 
+    public Product(String nameOfProduct, String brand, Double pricePerItem, String productCode, Category category) {
+        this.nameOfProduct = nameOfProduct;
+        this.brand = brand;
+        this.pricePerItem = pricePerItem;
+        this.productCode = productCode;
+        this.category = category;
+    }
 }

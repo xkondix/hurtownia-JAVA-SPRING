@@ -3,12 +3,8 @@ package com.kowalczyk.hurtownia.model.responses;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
-import javax.persistence.Column;
 
 @Data
-@RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class ProductRestModel {
 
@@ -17,4 +13,13 @@ public class ProductRestModel {
     private final Double pricePerItem;
     private final String productCode;
     private final Long idCategory;
+
+
+    public ProductRestModel(String nameOfProduct, String brand, Double pricePerItem, String productCode, Long idCategory) {
+        this.nameOfProduct = nameOfProduct;
+        this.brand = brand;
+        this.pricePerItem = pricePerItem;
+        this.productCode = productCode;
+        this.idCategory = idCategory;
+    }
 }
