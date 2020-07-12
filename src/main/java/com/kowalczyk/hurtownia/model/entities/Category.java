@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,11 +28,12 @@ public class Category {
     private final String nameOfCategory;
 
     @OneToMany()
-    private Set<Product> products;
+    private Set<Product> products = new HashSet<Product>();
 
     public Category(final String nameOfCategory) {
         this.nameOfCategory = nameOfCategory;
     }
+
 
     @Override
     public String toString()

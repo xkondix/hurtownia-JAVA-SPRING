@@ -18,7 +18,7 @@ public class CategoryController {
     }
 
     @GetMapping("category")
-    public Iterable<Category> getAll()
+    public Iterable<CategoryRestModel> getAll()
     {
         return categoryService.getAll();
     }

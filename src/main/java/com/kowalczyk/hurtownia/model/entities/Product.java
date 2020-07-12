@@ -6,10 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Optional;
+
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
@@ -37,9 +35,6 @@ public class Product {
     @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
-
-    //@Column(name = "category", insertable = false, updatable = false)
-    //private final Long categoryId;
 
 
     public Product(String nameOfProduct, String brand, Double pricePerItem, String productCode, Category category) {
