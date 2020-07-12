@@ -1,6 +1,8 @@
 package com.kowalczyk.hurtownia.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import java.util.Optional;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long id;
 
@@ -33,6 +35,7 @@ public class Product {
     private final String productCode;
 
     @ManyToOne()
+    @JoinColumn(name = "category_id")
     private Category category;
 
     //@Column(name = "category", insertable = false, updatable = false)

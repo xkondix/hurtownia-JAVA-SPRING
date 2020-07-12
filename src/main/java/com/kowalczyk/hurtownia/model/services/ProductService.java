@@ -5,6 +5,7 @@ import com.kowalczyk.hurtownia.model.entities.Product;
 import com.kowalczyk.hurtownia.model.repositories.CategoryRespository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
 import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,9 +28,12 @@ public class ProductService {
         productRepository.save(mapRestModel(product));
     }
 
+    @SneakyThrows
     private Product mapRestModel(final ProductRestModel model) {
+
+        System.out.println(model);
         return new Product(model.getNameOfProduct(),model.getBrand(),model.getPricePerItem()
-        ,model.getProductCode(),categoryRespository.findById(1l).get());
+        ,model.getProductCode(),(categoryRespository.findById(model.getCategoryId())).get());
     }
 
 

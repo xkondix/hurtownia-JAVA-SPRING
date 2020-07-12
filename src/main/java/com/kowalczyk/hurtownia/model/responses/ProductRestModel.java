@@ -12,14 +12,20 @@ public class ProductRestModel {
     private final String brand;
     private final Double pricePerItem;
     private final String productCode;
-    private final Long idCategory;
+    private final Long categoryId;
 
 
-    public ProductRestModel(String nameOfProduct, String brand, Double pricePerItem, String productCode, Long idCategory) {
+    public ProductRestModel(String nameOfProduct, String brand, Double pricePerItem, String productCode, Long categoryId) {
         this.nameOfProduct = nameOfProduct;
         this.brand = brand;
         this.pricePerItem = pricePerItem;
         this.productCode = productCode;
-        this.idCategory = idCategory;
+        this.categoryId = categoryId;
     }
+    @Override
+    public String toString()
+    {
+        return categoryId+" "+nameOfProduct+" "+brand+" "+pricePerItem+" "+productCode;
+    }
+
 }
