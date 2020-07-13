@@ -1,6 +1,7 @@
 package com.kowalczyk.hurtownia.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
@@ -22,12 +23,14 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
+    @JsonIgnore
     private Long id;
 
     @Column
     private final String nameOfCategory;
 
     @OneToMany()
+    @JsonIgnore
     private Set<Product> products = new HashSet<Product>();
 
     public Category(final String nameOfCategory) {

@@ -5,6 +5,7 @@ import com.kowalczyk.hurtownia.model.entities.Product;
 import com.kowalczyk.hurtownia.model.repositories.CategoryRespository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
 import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
+import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,8 +48,8 @@ public class CategoryService {
     }
 
 
-    private Set<Product> findAllByCategoryId(Long id)
+    private Set<ProductRestModel> findAllByCategoryId(Long id)
     {
-        return StreamSupport.stream((productRepository.findAllByCategoryId(id).spliterator()), true).collect(Collectors.toSet());
+        return StreamSupport.stream((productRepository.findAllByCategoryId(id).spliterator()), true).map(x -> new ProductRestModel(x)).collect(Collectors.toSet());
     }
 }

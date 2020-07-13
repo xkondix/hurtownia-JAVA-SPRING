@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Null;
 import java.util.Set;
 
 
@@ -15,7 +14,7 @@ import java.util.Set;
 public class CategoryRestModel  {
 
     private final String nameOfCategory;
-    private final Set<Product> products;
+    private final Set<ProductRestModel> products;
 
 
     public CategoryRestModel(String nameOfCategory) {
@@ -23,7 +22,7 @@ public class CategoryRestModel  {
         this.products = null;
     }
 
-    public CategoryRestModel(Category category, Set<Product> products ) {
+    public CategoryRestModel(Category category, Set<ProductRestModel> products ) {
         this.nameOfCategory = category.getNameOfCategory();
         this.products = products;
     }

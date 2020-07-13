@@ -1,6 +1,5 @@
 package com.kowalczyk.hurtownia.controller;
 
-import com.kowalczyk.hurtownia.model.entities.Category;
 import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
 import com.kowalczyk.hurtownia.model.services.CategoryService;
 import org.springframework.web.bind.annotation.*;

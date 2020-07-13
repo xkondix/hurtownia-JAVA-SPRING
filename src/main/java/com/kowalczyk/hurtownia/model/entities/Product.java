@@ -18,6 +18,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
+    @JsonIgnore
     private Long id;
 
     @Column

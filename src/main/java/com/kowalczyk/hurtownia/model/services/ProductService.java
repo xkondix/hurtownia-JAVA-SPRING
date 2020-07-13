@@ -30,8 +30,6 @@ public class ProductService {
 
     @SneakyThrows
     private Product mapRestModel(final ProductRestModel model) {
-
-        System.out.println(model);
         return new Product(model.getNameOfProduct(),model.getBrand(),model.getPricePerItem()
         ,model.getProductCode(),(categoryRespository.findById(model.getCategoryId())).get());
     }

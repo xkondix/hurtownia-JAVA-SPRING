@@ -1,5 +1,7 @@
 package com.kowalczyk.hurtownia.model.responses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kowalczyk.hurtownia.model.entities.Product;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,7 @@ public class ProductRestModel {
     private final String brand;
     private final Double pricePerItem;
     private final String productCode;
+    @JsonIgnore
     private final Long categoryId;
 
 
@@ -22,6 +25,25 @@ public class ProductRestModel {
         this.productCode = productCode;
         this.categoryId = categoryId;
     }
+
+    public ProductRestModel(String nameOfProduct, String brand, Double pricePerItem, String productCode) {
+        this.nameOfProduct = nameOfProduct;
+        this.brand = brand;
+        this.pricePerItem = pricePerItem;
+        this.productCode = productCode;
+        this.categoryId = null;
+    }
+
+    public ProductRestModel(Product product) {
+
+        this.nameOfProduct = product.getNameOfProduct();
+        this.brand = product.getBrand();
+        this.pricePerItem = product.getPricePerItem();
+        this.productCode = product.getNameOfProduct();
+        this.categoryId = product.getCategory().getId();
+
+    }
+
     @Override
     public String toString()
     {
