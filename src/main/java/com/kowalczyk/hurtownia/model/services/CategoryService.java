@@ -8,12 +8,8 @@ import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
 import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 
@@ -37,6 +33,14 @@ public class CategoryService {
         categoryRespository.save(mapRestModel(category));
     }
 
+    public CategoryRestModel getById(Long id)
+    {
+        return findByCategoryId(id);
+    }
+
+
+    //methods
+
     private Category mapRestModel(final CategoryRestModel model) {
         return new Category(model.getNameOfCategory());
     }
@@ -52,4 +56,12 @@ public class CategoryService {
     {
         return StreamSupport.stream((productRepository.findAllByCategoryId(id).spliterator()), true).map(x -> new ProductRestModel(x)).collect(Collectors.toSet());
     }
+
+    private CategoryRestModel findByCategoryId(Long id)
+    {
+         Optional<Category> category =  categoryRespository.findById(id);
+         return category.map(x -> new CategoryRestModel(category.get(),findAllByCategoryId(id))).orElse(null);
+    }
+
+
 }

@@ -2,7 +2,11 @@ package com.kowalczyk.hurtownia.controller;
 
 import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
 import com.kowalczyk.hurtownia.model.services.CategoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -16,10 +20,10 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("category")
-    public Iterable<CategoryRestModel> getAll()
+    @GetMapping("categories")
+    public ResponseEntity<Iterable<CategoryRestModel>> getAll()
     {
-        return categoryService.getAll();
+        return new ResponseEntity<Iterable<CategoryRestModel>>(categoryService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping("category")
@@ -28,6 +32,11 @@ public class CategoryController {
         categoryService.saveCategory(category);
     }
 
+    @GetMapping("category/{id}")
+    public ResponseEntity<CategoryRestModel> getById(@PathVariable Long id)
+    {
+        return new ResponseEntity<CategoryRestModel>(categoryService.getById(id), HttpStatus.OK);
+    }
 
 
 

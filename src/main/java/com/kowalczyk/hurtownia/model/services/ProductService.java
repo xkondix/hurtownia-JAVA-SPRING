@@ -8,6 +8,8 @@ import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ProductService {
 
@@ -28,10 +30,22 @@ public class ProductService {
         productRepository.save(mapRestModel(product));
     }
 
+    public ProductRestModel getById(Long id)
+    {
+        return findByProductId(id);
+    }
+
+    //methods
+
     @SneakyThrows
     private Product mapRestModel(final ProductRestModel model) {
         return new Product(model.getNameOfProduct(),model.getBrand(),model.getPricePerItem()
         ,model.getProductCode(),(categoryRespository.findById(model.getCategoryId())).get());
+    }
+
+    private ProductRestModel findByProductId(Long id)
+    {   Optional<Product> product =  productRepository.findById(id);
+        return product.map(x -> new ProductRestModel(product.get())).orElse(null);
     }
 
 
