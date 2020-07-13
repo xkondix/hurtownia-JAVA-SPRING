@@ -16,6 +16,8 @@ public class ProductRestModel {
     private final String productCode;
     @JsonIgnore
     private final Long categoryId;
+    @JsonIgnore
+    private final Long id;
 
 
     public ProductRestModel(String nameOfProduct, String brand, Double pricePerItem, String productCode, Long categoryId) {
@@ -24,6 +26,7 @@ public class ProductRestModel {
         this.pricePerItem = pricePerItem;
         this.productCode = productCode;
         this.categoryId = categoryId;
+        this.id = null;
     }
 
     public ProductRestModel(String nameOfProduct, String brand, Double pricePerItem, String productCode) {
@@ -32,6 +35,8 @@ public class ProductRestModel {
         this.pricePerItem = pricePerItem;
         this.productCode = productCode;
         this.categoryId = null;
+        this.id = null;
+
     }
 
     public ProductRestModel(Product product) {
@@ -41,6 +46,7 @@ public class ProductRestModel {
         this.pricePerItem = product.getPricePerItem();
         this.productCode = product.getNameOfProduct();
         this.categoryId = product.getCategory().getId();
+        this.id = product.getId();
 
     }
 

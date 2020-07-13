@@ -19,7 +19,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("product")
+    @GetMapping("products")
     public Iterable<Product> getAll()
     {
       return productService.getAll();
@@ -31,7 +31,9 @@ public class ProductController {
     @GetMapping("product/{id}")
     public ResponseEntity<ProductRestModel> getById(@PathVariable Long id)
     {
-        return new ResponseEntity<ProductRestModel>(productService.getById(id), HttpStatus.OK);
+        ProductRestModel product = productService.getById(id);
+        return new ResponseEntity<>(product.equals(null) ? null : product
+                ,product.equals(null) ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
 

@@ -1,12 +1,20 @@
 package com.kowalczyk.hurtownia.controller;
 
+import com.kowalczyk.hurtownia.model.entities.Product;
 import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
+import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
 import com.kowalczyk.hurtownia.model.services.CategoryService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
@@ -21,9 +29,18 @@ public class CategoryController {
     }
 
     @GetMapping("categories")
-    public ResponseEntity<Iterable<CategoryRestModel>> getAll()
+    public CollectionModel<EntityModel<CategoryRestModel>> getAll()
     {
-        return new ResponseEntity<Iterable<CategoryRestModel>>(categoryService.getAll(), HttpStatus.OK);
+
+        List<EntityModel<CategoryRestModel>> categories = StreamSupport.stream(categoryService.getAll().spliterator(), false)
+                .map(this::createCategory).collect(Collectors.toList());
+                        //EntityModel.of(category,
+//                        linkTo(methodOn(CategoryController.class).getById(category.getId())).withSelfRel(),
+//                        linkTo(methodOn(CategoryController.class).getAll()).withRel("categories")))
+//                .collect(Collectors.toList());
+
+        return CollectionModel.of(categories, linkTo(methodOn(CategoryController.class).getAll()).withSelfRel());
+        //return new ResponseEntity<Iterable<CategoryRestModel>>(categoryService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping("category")
@@ -33,9 +50,29 @@ public class CategoryController {
     }
 
     @GetMapping("category/{id}")
-    public ResponseEntity<CategoryRestModel> getById(@PathVariable Long id)
+    public EntityModel<CategoryRestModel> getById(@PathVariable Long id)
     {
-        return new ResponseEntity<CategoryRestModel>(categoryService.getById(id), HttpStatus.OK);
+        CategoryRestModel categoryRestModel =categoryService.getById(id);
+
+        categoryRestModel.setProducts2(categoryRestModel.getProducts().stream().map(product -> EntityModel.of(product,
+                linkTo(methodOn(ProductController.class).getById(product.getId())).withSelfRel()))
+                .collect(Collectors.toSet()));
+        return EntityModel.of(categoryRestModel, //
+                linkTo(methodOn(CategoryController.class).getById(id)).withSelfRel(),
+                linkTo(methodOn(CategoryController.class).getAll()).withRel("employees"));
+
+        //return new ResponseEntity<CategoryRestModel>(categoryService.getById(id), HttpStatus.OK);
+    }
+
+    private EntityModel<CategoryRestModel> createCategory(CategoryRestModel categoryRestModel)
+    {
+
+        categoryRestModel.setProducts2(categoryRestModel.getProducts().stream().map(product -> EntityModel.of(product,
+                linkTo(methodOn(ProductController.class).getById(product.getId())).withSelfRel()))
+                .collect(Collectors.toSet()));
+        return EntityModel.of(categoryRestModel, //
+                linkTo(methodOn(CategoryController.class).getById(categoryRestModel.getId())).withSelfRel(),
+                linkTo(methodOn(CategoryController.class).getAll()).withRel("employees"));
     }
 
 
