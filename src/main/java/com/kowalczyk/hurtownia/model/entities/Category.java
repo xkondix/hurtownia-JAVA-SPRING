@@ -9,10 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
@@ -23,15 +20,13 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    @JsonIgnore
     private Long id;
 
     @Column
     private final String nameOfCategory;
 
     @OneToMany()
-    @JsonIgnore
-    private Set<Product> products = new HashSet<Product>();
+    private List<Product> products;
 
     public Category(final String nameOfCategory) {
         this.nameOfCategory = nameOfCategory;

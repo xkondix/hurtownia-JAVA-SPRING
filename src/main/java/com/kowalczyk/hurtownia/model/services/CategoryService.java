@@ -4,13 +4,13 @@ import com.kowalczyk.hurtownia.model.entities.Category;
 import com.kowalczyk.hurtownia.model.entities.Product;
 import com.kowalczyk.hurtownia.model.repositories.CategoryRespository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
+import com.kowalczyk.hurtownia.model.representationModel.CategoryRepresentationModel;
+import com.kowalczyk.hurtownia.model.resourceAssembler.CategoryRepresentationModelAssembler;
 import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
-import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 
 @Service
@@ -25,17 +25,28 @@ public class CategoryService {
         this.productRepository = productRepository;
     }
 
-    public Iterable<CategoryRestModel> getAll() {
-        return mapListRestModel(categoryRespository.findAll());
+    public List<CategoryRepresentationModel> getAll() {
+        return categoryRespository.findAll().stream().map
+                (x -> getById(x.getId()))
+                .collect(Collectors.toList());
     }
 
     public void saveCategory(CategoryRestModel category) {
         categoryRespository.save(mapRestModel(category));
     }
 
-    public CategoryRestModel getById(Long id)
+    public CategoryRepresentationModel getById(Long id)
     {
-        return findByCategoryId(id);
+        Optional<Category> category = categoryRespository.findById(id);
+        if(category.isPresent())
+        {
+            CategoryRepresentationModelAssembler categoryRepresentationModelAssembler =
+                    new CategoryRepresentationModelAssembler("category");
+            categoryRepresentationModelAssembler.setProducts(findAllByCategoryId(category.get().getId()));
+            return categoryRepresentationModelAssembler.toModel(category.get());
+        }
+
+        return null;
     }
 
 
@@ -45,23 +56,10 @@ public class CategoryService {
         return new Category(model.getNameOfCategory());
     }
 
-    private Iterable<CategoryRestModel> mapListRestModel(final Iterable<Category> model) {
-        return StreamSupport.stream(model.spliterator(), false).
-                map(x -> new CategoryRestModel(x,findAllByCategoryId(x.getId())))
-                .collect(Collectors.toList());
-    }
 
-
-    private Set<ProductRestModel> findAllByCategoryId(Long id)
+    private List<Product> findAllByCategoryId(Long id)
     {
-        return StreamSupport.stream((productRepository.findAllByCategoryId(id).spliterator()), true).map(x -> new ProductRestModel(x)).collect(Collectors.toSet());
+        return productRepository.findAllByCategoryId(id);
     }
-
-    private CategoryRestModel findByCategoryId(Long id)
-    {
-         Optional<Category> category =  categoryRespository.findById(id);
-         return category.map(x -> new CategoryRestModel(category.get(),findAllByCategoryId(id))).orElse(null);
-    }
-
 
 }

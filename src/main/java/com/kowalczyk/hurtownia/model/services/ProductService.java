@@ -1,14 +1,17 @@
 package com.kowalczyk.hurtownia.model.services;
 
-import com.kowalczyk.hurtownia.model.entities.Category;
 import com.kowalczyk.hurtownia.model.entities.Product;
 import com.kowalczyk.hurtownia.model.repositories.CategoryRespository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
+import com.kowalczyk.hurtownia.model.representationModel.ProductRepresentationModel;
+import com.kowalczyk.hurtownia.model.resourceAssembler.ProductRepresentationModelAssembler;
 import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -22,17 +25,27 @@ public class ProductService {
         this.categoryRespository = categoryRespository;
     }
 
-    public Iterable<Product> getAll() {
-        return productRepository.findAll();
+    public List<ProductRepresentationModel> getAll(String path)
+    {
+        return productRepository.findAll().stream().map
+                (x -> new ProductRepresentationModelAssembler(path).toModel(x))
+                .collect(Collectors.toList());
     }
 
     public void saveProduct(ProductRestModel product) {
         productRepository.save(mapRestModel(product));
     }
 
-    public ProductRestModel getById(Long id)
+    public ProductRepresentationModel getById(Long id)
     {
-        return findByProductId(id);
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent())
+        {
+            return new ProductRepresentationModelAssembler
+                    ("product").toModel(product.get());
+        }
+
+        return null;
     }
 
     //methods
@@ -43,10 +56,6 @@ public class ProductService {
         ,model.getProductCode(),(categoryRespository.findById(model.getCategoryId())).get());
     }
 
-    private ProductRestModel findByProductId(Long id)
-    {   Optional<Product> product =  productRepository.findById(id);
-        return product.map(x -> new ProductRestModel(product.get())).orElse(null);
-    }
 
 
 
