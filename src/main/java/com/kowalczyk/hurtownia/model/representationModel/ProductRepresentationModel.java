@@ -4,8 +4,9 @@ import com.kowalczyk.hurtownia.model.entities.Product;
 import com.kowalczyk.hurtownia.model.resourceAssembler.CategoryRepresentationModelAssembler;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
-
+@Relation(value="product", collectionRelation="products")
 public class ProductRepresentationModel extends RepresentationModel<ProductRepresentationModel>
 {
     @Getter

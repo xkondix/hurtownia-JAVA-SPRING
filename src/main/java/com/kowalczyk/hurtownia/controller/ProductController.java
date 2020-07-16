@@ -40,4 +40,19 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+//    @GetMapping("product/{name}")
+//    public ResponseEntity<ProductRepresentationModel> getByName(@PathVariable String name) {
+//        System.out.println(name);
+//        ProductRepresentationModel product = productService.getByName(name);
+//        product.add(linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
+//        return ResponseEntity.ok(product);
+//    }
+
+//    @GetMapping("product/{brand}")
+//    public ResponseEntity<ProductRepresentationModel> getByBrand(@PathVariable String brand) {
+//        ProductRepresentationModel product = productService.getByBrand(brand);
+//        product.add(linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
+//        return ResponseEntity.ok(product);
+//    }
+
 }

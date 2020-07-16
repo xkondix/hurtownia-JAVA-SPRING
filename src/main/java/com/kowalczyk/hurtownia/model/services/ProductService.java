@@ -48,6 +48,37 @@ public class ProductService {
         return null;
     }
 
+    public ProductRepresentationModel getByBrand(String brand)
+        {
+            Optional<Product> product = productRepository.findByBrand(brand);
+            if(product.isPresent())
+            {
+                return new ProductRepresentationModelAssembler
+                        ("product").toModel(product.get());
+            }
+
+            return null;
+
+        }
+
+
+
+    public ProductRepresentationModel getByName(String name)
+    {
+        Optional<Product> product = productRepository.findByNameOfProduct(name);
+        if(product.isPresent())
+        {
+            return new ProductRepresentationModelAssembler
+                    ("product").toModel(product.get());
+        }
+
+        return null;
+
+    }
+
+
+
+
     //methods
 
     @SneakyThrows
@@ -55,7 +86,6 @@ public class ProductService {
         return new Product(model.getNameOfProduct(),model.getBrand(),model.getPricePerItem()
         ,model.getProductCode(),(categoryRespository.findById(model.getCategoryId())).get());
     }
-
 
 
 

@@ -1,11 +1,8 @@
 package com.kowalczyk.hurtownia.model.representationModel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kowalczyk.hurtownia.model.entities.Category;
 import com.kowalczyk.hurtownia.model.entities.Product;
-import com.kowalczyk.hurtownia.model.resourceAssembler.CategoryRepresentationModelAssembler;
 import com.kowalczyk.hurtownia.model.resourceAssembler.ProductRepresentationModelAssembler;
-import com.kowalczyk.hurtownia.model.services.CategoryService;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
