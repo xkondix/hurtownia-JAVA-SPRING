@@ -2,7 +2,7 @@ package com.kowalczyk.hurtownia.model.services;
 
 import com.kowalczyk.hurtownia.model.entities.Category;
 import com.kowalczyk.hurtownia.model.entities.Product;
-import com.kowalczyk.hurtownia.model.repositories.CategoryRespository;
+import com.kowalczyk.hurtownia.model.repositories.CategoryRepository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
 import com.kowalczyk.hurtownia.model.representationModel.CategoryRepresentationModel;
 import com.kowalczyk.hurtownia.model.resourceAssembler.CategoryRepresentationModelAssembler;
@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryService {
 
-    private final CategoryRespository categoryRespository;
+    private final CategoryRepository categoryRespository;
     private final ProductRepository productRepository;
 
 
-    public CategoryService(CategoryRespository categoryRespository, ProductRepository productRepository) {
+    public CategoryService(CategoryRepository categoryRespository, ProductRepository productRepository) {
         this.categoryRespository = categoryRespository;
         this.productRepository = productRepository;
     }

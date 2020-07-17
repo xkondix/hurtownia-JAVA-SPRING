@@ -4,7 +4,7 @@ package com.kowalczyk.hurtownia;
 import com.kowalczyk.hurtownia.controller.ProductController;
 import com.kowalczyk.hurtownia.model.entities.Category;
 import com.kowalczyk.hurtownia.model.entities.Product;
-import com.kowalczyk.hurtownia.model.repositories.CategoryRespository;
+import com.kowalczyk.hurtownia.model.repositories.CategoryRepository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class ProductControllerTests {
     private ProductRepository productRepository;
 
     @MockBean
-    private CategoryRespository categoryRespository;
+    private CategoryRepository categoryRespository;
 
     @Before
     public void setup() {
