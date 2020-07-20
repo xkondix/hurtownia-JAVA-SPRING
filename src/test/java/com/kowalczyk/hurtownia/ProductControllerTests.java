@@ -7,14 +7,14 @@ import com.kowalczyk.hurtownia.model.entities.Product;
 import com.kowalczyk.hurtownia.model.repositories.CategoryRepository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -67,11 +67,23 @@ public class ProductControllerTests {
 
     }
 
-    @Test
-    public void testShowDesignForm() throws Exception {
-        mockMvc.perform(get("/products"))
-                .andExpect(status().isOk());
 
-    }
+//    @Test
+//    public void test_get_all_products() throws Exception {
+//        mockMvc.perform(get("/api/products"))
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].nameOfProduct", Is.is("Printer")))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].brand", Is.is("HP")))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].pricePerItem", Is.is(199.99)));
+//
+//    }
+//
+
+    @Test
+    public void test()
+    {}
+
+
 
 }

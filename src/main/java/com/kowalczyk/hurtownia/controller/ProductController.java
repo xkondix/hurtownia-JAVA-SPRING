@@ -12,6 +12,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("api")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;

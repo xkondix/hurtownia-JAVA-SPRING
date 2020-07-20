@@ -1,6 +1,6 @@
 package com.kowalczyk.hurtownia.model.services;
 
-import com.kowalczyk.hurtownia.model.entities.UserAccount;
+import com.kowalczyk.hurtownia.model.entities.employees.UserAccount;
 import com.kowalczyk.hurtownia.model.repositories.UserAccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

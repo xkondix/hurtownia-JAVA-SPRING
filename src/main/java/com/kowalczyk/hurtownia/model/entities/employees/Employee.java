@@ -1,10 +1,12 @@
-package com.kowalczyk.hurtownia.model.entities;
+package com.kowalczyk.hurtownia.model.entities.employees;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,6 +23,13 @@ public class Employee {
     @OneToOne()
     @JoinColumn(name = "id")
     private UserAccount userAccount;
+
+    @OneToMany(
+            mappedBy = "employee",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<PositionData> tags = new ArrayList<>();
 
 
     public Employee(String name, String surename, UserAccount userAccount)
