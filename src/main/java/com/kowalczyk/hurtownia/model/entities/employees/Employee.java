@@ -20,16 +20,16 @@ public class Employee {
     private final String name;
     private final String surename;
 
-    @OneToOne()
-    @JoinColumn(name = "id")
-    private UserAccount userAccount;
-
     @OneToMany(
             mappedBy = "employee",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<PositionData> tags = new ArrayList<>();
+    private List<JobPositionEmployee> jobs = new ArrayList<>();
+
+    @OneToOne()
+    @JoinColumn(name = "user_account_id")
+    private UserAccount userAccount;
 
 
     public Employee(String name, String surename, UserAccount userAccount)

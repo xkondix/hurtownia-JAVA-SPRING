@@ -12,7 +12,7 @@ import java.util.Objects;
 @Embeddable
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-public class PositionDataId implements Serializable {
+public class JobPositionEmployeeId implements Serializable {
 
 
     @Column(name = "employee_id")
@@ -21,7 +21,7 @@ public class PositionDataId implements Serializable {
     @Column(name = "position_id")
     private final Long positonId;
 
-    public PositionDataId(Long empoyeeId, Long positonId) {
+    public JobPositionEmployeeId(Long empoyeeId, Long positonId) {
         this.empoyeeId = empoyeeId;
         this.positonId = positonId;
     }
@@ -34,7 +34,7 @@ public class PositionDataId implements Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        PositionDataId that = (PositionDataId) o;
+        JobPositionEmployeeId that = (JobPositionEmployeeId) o;
         return Objects.equals(positonId, that.positonId) &&
                 Objects.equals(empoyeeId, that.empoyeeId);
     }

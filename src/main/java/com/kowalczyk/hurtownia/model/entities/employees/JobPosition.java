@@ -10,18 +10,17 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-public class Position {
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
+public class JobPosition {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private final String nameOfPosition;
 
-    public Position(String nameOfPosition) {
+    public JobPosition(String nameOfPosition) {
         this.nameOfPosition = nameOfPosition;
     }
-
 
 
     @OneToMany(
@@ -29,5 +28,5 @@ public class Position {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<PositionData> posts = new ArrayList<>();
+    private List<JobPositionEmployee> posts = new ArrayList<>();
 }

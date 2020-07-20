@@ -1,4 +1,4 @@
-package com.kowalczyk.hurtownia.model.repositories;
+package com.kowalczyk.hurtownia.model.repositories.employees;
 
 import com.kowalczyk.hurtownia.model.entities.employees.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;

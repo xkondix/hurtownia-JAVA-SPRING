@@ -1,7 +1,7 @@
 package com.kowalczyk.hurtownia.model.services;
 
 import com.kowalczyk.hurtownia.model.entities.employees.UserAccount;
-import com.kowalczyk.hurtownia.model.repositories.UserAccountRepository;
+import com.kowalczyk.hurtownia.model.repositories.employees.UserAccountRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,7 +22,6 @@ public class UserAccountService implements UserDetailsService {
             throws UsernameNotFoundException {
         System.out.println(username);
         UserAccount user = userAccountRespository.findByUsername(username);
-        System.out.println(user.getPassword());
         if (user != null) {
             return user;
         }

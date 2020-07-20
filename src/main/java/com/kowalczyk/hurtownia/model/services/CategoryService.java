@@ -2,11 +2,13 @@ package com.kowalczyk.hurtownia.model.services;
 
 import com.kowalczyk.hurtownia.model.entities.Category;
 import com.kowalczyk.hurtownia.model.entities.Product;
+
 import com.kowalczyk.hurtownia.model.repositories.CategoryRepository;
 import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
 import com.kowalczyk.hurtownia.model.representationModel.CategoryRepresentationModel;
 import com.kowalczyk.hurtownia.model.resourceAssembler.CategoryRepresentationModelAssembler;
 import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,6 +22,7 @@ public class CategoryService {
     private final ProductRepository productRepository;
 
 
+    @Autowired
     public CategoryService(CategoryRepository categoryRespository, ProductRepository productRepository) {
         this.categoryRespository = categoryRespository;
         this.productRepository = productRepository;

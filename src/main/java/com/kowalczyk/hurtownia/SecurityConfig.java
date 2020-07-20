@@ -25,6 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/api/employee/job")
+                .access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/employee")
                 .access("hasRole('ROLE_USER')")
                 .antMatchers("/", "/**").access("permitAll")
@@ -36,6 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/employee")
                 .and()
                 .csrf()
+//                .disable()
+//                .authorizeRequests()
+//                .anyRequest()
+//                .permitAll()
                 .and()
                 .headers()
                 .frameOptions()
