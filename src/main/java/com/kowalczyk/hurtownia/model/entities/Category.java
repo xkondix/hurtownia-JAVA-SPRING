@@ -18,11 +18,8 @@ import java.util.*;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
-    @Column
     private final String nameOfCategory;
 
     @OneToMany()

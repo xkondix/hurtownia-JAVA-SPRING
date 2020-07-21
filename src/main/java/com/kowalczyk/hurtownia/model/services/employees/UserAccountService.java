@@ -1,7 +1,8 @@
-package com.kowalczyk.hurtownia.model.services;
+package com.kowalczyk.hurtownia.model.services.employees;
 
 import com.kowalczyk.hurtownia.model.entities.employees.UserAccount;
 import com.kowalczyk.hurtownia.model.repositories.employees.UserAccountRepository;
+import com.kowalczyk.hurtownia.model.responses.employees.UserAccountRestModel;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,4 +31,7 @@ public class UserAccountService implements UserDetailsService {
     }
 
 
+    public void saveUser(UserAccountRestModel userAccountRestModel) {
+        userAccountRespository.save(userAccountRestModel.mapToEntity());
+    }
 }

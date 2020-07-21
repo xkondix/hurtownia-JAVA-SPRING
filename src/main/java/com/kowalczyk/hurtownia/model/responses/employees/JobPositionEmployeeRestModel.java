@@ -1,4 +1,4 @@
-package com.kowalczyk.hurtownia.model.responses;
+package com.kowalczyk.hurtownia.model.responses.employees;
 
 import com.kowalczyk.hurtownia.model.entities.employees.Employee;
 import com.kowalczyk.hurtownia.model.entities.employees.JobPosition;

@@ -18,20 +18,11 @@ import javax.persistence.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
-    @Column
     private final String nameOfProduct;
-
-    @Column
     private final String brand;
-
-    @Column
     private final Double pricePerItem;
-
-    @Column
     private final String productCode;
 
     @ManyToOne()

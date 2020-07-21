@@ -18,7 +18,6 @@ public class JobPositionEmployee {
 
     private final Double reward;
     private final java.util.Date dataOfStart;
-    @Null
     private final java.util.Date dataOfEnd;
 
 
