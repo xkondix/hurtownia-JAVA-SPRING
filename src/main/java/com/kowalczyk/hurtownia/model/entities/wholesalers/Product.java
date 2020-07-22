@@ -1,19 +1,17 @@
-package com.kowalczyk.hurtownia.model.entities;
+package com.kowalczyk.hurtownia.model.entities.wholesalers;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
-@Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @Entity
+@Data
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @Table(name="product")
 public class Product {
 
@@ -28,6 +26,13 @@ public class Product {
     @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<WholesaleProduct> wholesalers = new ArrayList<>();
 
 
     public Product(String nameOfProduct, String brand, Double pricePerItem, String productCode, Category category) {

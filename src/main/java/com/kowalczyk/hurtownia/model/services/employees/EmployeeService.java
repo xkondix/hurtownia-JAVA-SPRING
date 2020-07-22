@@ -6,7 +6,7 @@ import com.kowalczyk.hurtownia.model.repositories.employees.EmployeeRepository;
 import com.kowalczyk.hurtownia.model.repositories.employees.JobPositionEmployeeRepository;
 import com.kowalczyk.hurtownia.model.repositories.employees.JobPositionRepository;
 import com.kowalczyk.hurtownia.model.repositories.employees.UserAccountRepository;
-import com.kowalczyk.hurtownia.model.representationModel.EmployeeRepresentationModel;
+import com.kowalczyk.hurtownia.model.representationModel.employees.EmployeeRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.employees.EmployeeRestModel;
 import org.springframework.stereotype.Service;
 

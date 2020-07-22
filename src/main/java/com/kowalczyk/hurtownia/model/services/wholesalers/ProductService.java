@@ -1,11 +1,11 @@
-package com.kowalczyk.hurtownia.model.services;
+package com.kowalczyk.hurtownia.model.services.wholesalers;
 
-import com.kowalczyk.hurtownia.model.entities.Product;
-import com.kowalczyk.hurtownia.model.repositories.CategoryRepository;
-import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
-import com.kowalczyk.hurtownia.model.representationModel.ProductRepresentationModel;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
+import com.kowalczyk.hurtownia.model.repositories.wholesalers.CategoryRepository;
+import com.kowalczyk.hurtownia.model.repositories.wholesalers.ProductRepository;
+import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepresentationModel;
 import com.kowalczyk.hurtownia.model.resourceAssembler.ProductRepresentationModelAssembler;
-import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
+import com.kowalczyk.hurtownia.model.responses.wholesalers.ProductRestModel;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 

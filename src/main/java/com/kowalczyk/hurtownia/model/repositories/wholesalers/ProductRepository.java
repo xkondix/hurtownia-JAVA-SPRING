@@ -1,6 +1,6 @@
-package com.kowalczyk.hurtownia.model.repositories;
+package com.kowalczyk.hurtownia.model.repositories.wholesalers;
 
-import com.kowalczyk.hurtownia.model.entities.Product;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

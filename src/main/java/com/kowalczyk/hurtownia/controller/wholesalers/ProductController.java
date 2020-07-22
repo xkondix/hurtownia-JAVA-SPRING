@@ -1,8 +1,8 @@
-package com.kowalczyk.hurtownia.controller;
+package com.kowalczyk.hurtownia.controller.wholesalers;
 
-import com.kowalczyk.hurtownia.model.representationModel.ProductRepresentationModel;
-import com.kowalczyk.hurtownia.model.responses.ProductRestModel;
-import com.kowalczyk.hurtownia.model.services.ProductService;
+import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepresentationModel;
+import com.kowalczyk.hurtownia.model.responses.wholesalers.ProductRestModel;
+import com.kowalczyk.hurtownia.model.services.wholesalers.ProductService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,10 @@
 package com.kowalczyk.hurtownia.model.resourceAssembler;
 
-import com.kowalczyk.hurtownia.controller.CategoryController;
-import com.kowalczyk.hurtownia.controller.ProductController;
-import com.kowalczyk.hurtownia.model.entities.Category;
-import com.kowalczyk.hurtownia.model.entities.Product;
-import com.kowalczyk.hurtownia.model.representationModel.CategoryRepresentationModel;
+import com.kowalczyk.hurtownia.controller.wholesalers.CategoryController;
+import com.kowalczyk.hurtownia.controller.wholesalers.ProductController;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Category;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
+import com.kowalczyk.hurtownia.model.representationModel.wholesalers.CategoryRepresentationModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.util.Assert;
 

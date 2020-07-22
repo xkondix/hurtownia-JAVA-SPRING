@@ -1,13 +1,13 @@
-package com.kowalczyk.hurtownia.model.services;
+package com.kowalczyk.hurtownia.model.services.wholesalers;
 
-import com.kowalczyk.hurtownia.model.entities.Category;
-import com.kowalczyk.hurtownia.model.entities.Product;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Category;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
 
-import com.kowalczyk.hurtownia.model.repositories.CategoryRepository;
-import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
-import com.kowalczyk.hurtownia.model.representationModel.CategoryRepresentationModel;
+import com.kowalczyk.hurtownia.model.repositories.wholesalers.CategoryRepository;
+import com.kowalczyk.hurtownia.model.repositories.wholesalers.ProductRepository;
+import com.kowalczyk.hurtownia.model.representationModel.wholesalers.CategoryRepresentationModel;
 import com.kowalczyk.hurtownia.model.resourceAssembler.CategoryRepresentationModelAssembler;
-import com.kowalczyk.hurtownia.model.responses.CategoryRestModel;
+import com.kowalczyk.hurtownia.model.responses.wholesalers.CategoryRestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

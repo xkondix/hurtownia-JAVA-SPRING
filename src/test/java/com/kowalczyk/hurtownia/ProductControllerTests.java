@@ -1,11 +1,11 @@
 package com.kowalczyk.hurtownia;
 
 
-import com.kowalczyk.hurtownia.controller.ProductController;
-import com.kowalczyk.hurtownia.model.entities.Category;
-import com.kowalczyk.hurtownia.model.entities.Product;
-import com.kowalczyk.hurtownia.model.repositories.CategoryRepository;
-import com.kowalczyk.hurtownia.model.repositories.ProductRepository;
+import com.kowalczyk.hurtownia.controller.wholesalers.ProductController;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Category;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
+import com.kowalczyk.hurtownia.model.repositories.wholesalers.CategoryRepository;
+import com.kowalczyk.hurtownia.model.repositories.wholesalers.ProductRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProductController.class)

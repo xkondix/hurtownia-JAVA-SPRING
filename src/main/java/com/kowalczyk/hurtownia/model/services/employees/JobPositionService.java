@@ -2,7 +2,7 @@ package com.kowalczyk.hurtownia.model.services.employees;
 
 import com.kowalczyk.hurtownia.model.entities.employees.JobPosition;
 import com.kowalczyk.hurtownia.model.repositories.employees.JobPositionRepository;
-import com.kowalczyk.hurtownia.model.representationModel.JobPositionRepresentationModel;
+import com.kowalczyk.hurtownia.model.representationModel.employees.JobPositionRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.employees.JobPositionRestModel;
 import org.springframework.stereotype.Service;
 

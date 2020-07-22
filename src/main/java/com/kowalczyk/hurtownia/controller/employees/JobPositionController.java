@@ -1,7 +1,6 @@
 package com.kowalczyk.hurtownia.controller.employees;
 
-import com.kowalczyk.hurtownia.model.representationModel.JobPositionRepresentationModel;
-import com.kowalczyk.hurtownia.model.responses.employees.JobPositionEmployeeRestModel;
+import com.kowalczyk.hurtownia.model.representationModel.employees.JobPositionRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.employees.JobPositionRestModel;
 import com.kowalczyk.hurtownia.model.services.employees.JobPositionService;
 import org.springframework.web.bind.annotation.*;

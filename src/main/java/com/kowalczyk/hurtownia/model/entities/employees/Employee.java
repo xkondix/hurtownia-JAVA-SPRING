@@ -1,5 +1,6 @@
 package com.kowalczyk.hurtownia.model.entities.employees;
 
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Wholesale;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,10 @@ public class Employee {
     @OneToOne()
     @JoinColumn(name = "user_account_id")
     private UserAccount userAccount;
+
+    @ManyToOne()
+    @JoinColumn(name = "wholesale_id")
+    private Wholesale wholesale;
 
 
     public Employee(String name, String surename, UserAccount userAccount)

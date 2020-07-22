@@ -1,9 +1,5 @@
-package com.kowalczyk.hurtownia.model.entities;
+package com.kowalczyk.hurtownia.model.entities.wholesalers;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;

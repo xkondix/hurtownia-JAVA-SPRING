@@ -1,7 +1,7 @@
 package com.kowalczyk.hurtownia.model.resourceAssembler;
-import com.kowalczyk.hurtownia.controller.ProductController;
-import com.kowalczyk.hurtownia.model.entities.Product;
-import com.kowalczyk.hurtownia.model.representationModel.ProductRepresentationModel;
+import com.kowalczyk.hurtownia.controller.wholesalers.ProductController;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
+import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepresentationModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.util.Assert;
 

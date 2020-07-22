@@ -1,7 +1,5 @@
-package com.kowalczyk.hurtownia.model.responses;
+package com.kowalczyk.hurtownia.model.responses.wholesalers;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kowalczyk.hurtownia.model.entities.Product;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;

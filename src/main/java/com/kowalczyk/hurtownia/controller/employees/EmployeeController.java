@@ -1,7 +1,7 @@
 package com.kowalczyk.hurtownia.controller.employees;
 
 import com.kowalczyk.hurtownia.model.entities.employees.UserAccount;
-import com.kowalczyk.hurtownia.model.representationModel.EmployeeRepresentationModel;
+import com.kowalczyk.hurtownia.model.representationModel.employees.EmployeeRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.employees.EmployeeRestModel;
 import com.kowalczyk.hurtownia.model.responses.employees.JobPositionEmployeeRestModel;
 import com.kowalczyk.hurtownia.model.responses.employees.UserAccountRestModel;

@@ -1,6 +1,6 @@
-package com.kowalczyk.hurtownia.model.representationModel;
+package com.kowalczyk.hurtownia.model.representationModel.wholesalers;
 
-import com.kowalczyk.hurtownia.model.entities.Product;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
 import com.kowalczyk.hurtownia.model.resourceAssembler.CategoryRepresentationModelAssembler;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
