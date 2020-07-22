@@ -21,7 +21,7 @@ public class Wholesale {
 
 
     @OneToMany(
-            mappedBy = "wholesale",
+            //mappedBy = "wholesale",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

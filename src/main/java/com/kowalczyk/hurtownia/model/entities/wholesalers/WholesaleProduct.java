@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Data
@@ -38,6 +41,22 @@ public class WholesaleProduct {
     {
         this.quantity-=quantity;
     }
+
+    public List<String> getListForWholesale()
+    {
+        return new ArrayList<String>(Arrays.asList(
+                "Product : "+product.getNameOfProduct()
+                ,"Quantity : "+quantity));
+    }
+
+    public List<String> getListForProduct()
+    {
+        return new ArrayList<String>(Arrays.asList(
+                "Wholesale : "+wholesale.getNameOfWholesale()
+                ,"Quantity : "+quantity));
+
+    }
+
 
     public String toString()
     {

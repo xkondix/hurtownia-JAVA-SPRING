@@ -31,8 +31,8 @@ public class Employee {
     @JoinColumn(name = "user_account_id")
     private UserAccount userAccount;
 
-    @ManyToOne()
-    @JoinColumn(name = "wholesale_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("wholesaleId")
     private Wholesale wholesale;
 
 
