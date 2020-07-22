@@ -1,4 +1,4 @@
-package com.kowalczyk.hurtownia;
+package com.kowalczyk.hurtownia.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

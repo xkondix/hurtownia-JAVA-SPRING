@@ -35,7 +35,7 @@ public class CategoryService {
     }
 
     public void saveCategory(CategoryRestModel category) {
-        categoryRespository.save(mapRestModel(category));
+        categoryRespository.save(mapToEntity(category));
     }
 
     public CategoryRepresentationModel getById(Long id)
@@ -55,7 +55,7 @@ public class CategoryService {
 
     //methods
 
-    private Category mapRestModel(final CategoryRestModel model) {
+    private Category mapToEntity(final CategoryRestModel model) {
         return new Category(model.getNameOfCategory());
     }
 

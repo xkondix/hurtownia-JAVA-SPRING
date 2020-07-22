@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 public class Employee {
 
     @Id

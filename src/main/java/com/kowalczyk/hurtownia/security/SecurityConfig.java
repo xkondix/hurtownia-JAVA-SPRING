@@ -1,4 +1,4 @@
-package com.kowalczyk.hurtownia;
+package com.kowalczyk.hurtownia.security;
 
 import com.kowalczyk.hurtownia.model.services.employees.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;

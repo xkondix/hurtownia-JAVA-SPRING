@@ -28,5 +28,5 @@ public class JobPosition {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<JobPositionEmployee> posts = new ArrayList<>();
+    private List<JobPositionEmployee> employees = new ArrayList<>();
 }

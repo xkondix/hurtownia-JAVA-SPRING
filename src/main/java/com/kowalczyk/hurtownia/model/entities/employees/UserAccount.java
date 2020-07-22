@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @Entity
 @Data
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class UserAccount implements UserDetails {
 
