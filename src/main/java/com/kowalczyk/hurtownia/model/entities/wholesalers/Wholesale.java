@@ -21,7 +21,7 @@ public class Wholesale {
 
 
     @OneToMany(
-            //mappedBy = "wholesale",
+            //mappedBy = "wholesale", this line give me infinte recursion
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

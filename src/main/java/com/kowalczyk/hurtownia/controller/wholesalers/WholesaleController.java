@@ -3,10 +3,7 @@ package com.kowalczyk.hurtownia.controller.wholesalers;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.Wholesale;
 import com.kowalczyk.hurtownia.model.representationModel.wholesalers.WholesaleRepresentationModel;
 import com.kowalczyk.hurtownia.model.services.wholesalers.WholesaleService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,12 @@ public class WholesaleController {
     {
         return wholesaleService.getAll();
     }
+
+    @GetMapping("wholesale/{id}")
+    public WholesaleRepresentationModel getById(@PathVariable Long id)
+    {
+        return wholesaleService.getById(id);
+    }
+
 
 }

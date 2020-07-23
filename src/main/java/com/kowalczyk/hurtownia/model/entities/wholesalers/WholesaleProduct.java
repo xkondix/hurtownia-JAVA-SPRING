@@ -1,6 +1,7 @@
 package com.kowalczyk.hurtownia.model.entities.wholesalers;
 
 
+import com.kowalczyk.hurtownia.model.entities.client.OrderSupllyWholesaleProduct;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 public class WholesaleProduct {
 
 
@@ -27,6 +28,13 @@ public class WholesaleProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("wholesaleId")
     private Wholesale wholesale;
+
+    @OneToMany(
+            mappedBy = "wholesaleProduct",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<OrderSupllyWholesaleProduct> orders = new ArrayList<>();
 
     public WholesaleProduct(Long quantity) {
         this.quantity = quantity;

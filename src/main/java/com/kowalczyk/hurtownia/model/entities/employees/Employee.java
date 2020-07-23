@@ -1,11 +1,14 @@
 package com.kowalczyk.hurtownia.model.entities.employees;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.Wholesale;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,8 @@ public class Employee {
     private final String name;
     private final String surename;
 
+
+
     @OneToMany(
             mappedBy = "employee",
             cascade = CascadeType.ALL,
@@ -31,8 +36,9 @@ public class Employee {
     @JoinColumn(name = "user_account_id")
     private UserAccount userAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("wholesaleId")
+
+    @ManyToOne()
+    @JoinColumn(name = "wholesale_id")
     private Wholesale wholesale;
 
 
