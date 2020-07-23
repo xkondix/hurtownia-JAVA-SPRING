@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -21,16 +20,18 @@ public class OrderSupllyWholesaleProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("wholesaleProductId")
-    private WholesaleProduct wholesaleProduct;
+    private final WholesaleProduct wholesaleProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderSupplyId")
-    private OrderSupply orderSupply;
+    private final OrderSupply orderSupply;
 
 
-    public OrderSupllyWholesaleProduct(Long quantity) {
+    public OrderSupllyWholesaleProduct(Long quantity, WholesaleProduct wholesaleProduct, OrderSupply orderSupply) {
         this.quantity = quantity;
-        this.typeOfService = orderSupply.getTypeOfService();
+        this.wholesaleProduct = wholesaleProduct;
+        this.orderSupply = orderSupply;
+        this.typeOfService = this.orderSupply.getTypeOfService();
     }
 
 

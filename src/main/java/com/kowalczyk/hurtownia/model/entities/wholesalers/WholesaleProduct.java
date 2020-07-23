@@ -23,11 +23,11 @@ public class WholesaleProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
-    private Product product;
+    private final Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("wholesaleId")
-    private Wholesale wholesale;
+    private final Wholesale wholesale;
 
     @OneToMany(
             mappedBy = "wholesaleProduct",
@@ -36,8 +36,10 @@ public class WholesaleProduct {
     )
     private List<OrderSupllyWholesaleProduct> orders = new ArrayList<>();
 
-    public WholesaleProduct(Long quantity) {
+    public WholesaleProduct(Long quantity, Product product, Wholesale wholesale) {
         this.quantity = quantity;
+        this.product = product;
+        this.wholesale = wholesale;
     }
 
     public void addProduct(Long quantity)

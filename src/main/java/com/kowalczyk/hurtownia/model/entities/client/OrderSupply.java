@@ -20,7 +20,7 @@ public class OrderSupply {
     private Long id;
     private Date createdAt;
     private final TypeOfService typeOfService;
-
+    private final Long wholesale;
     @ManyToOne()
     @JoinColumn(name = "client_id")
     private Client client;
@@ -33,8 +33,14 @@ public class OrderSupply {
     @Size(min=1, message="You must choose at least 1 product")
     private List<OrderSupllyWholesaleProduct> products = new ArrayList<>();
 
-    public OrderSupply(TypeOfService typeOfService, List<Long> wholesalersId) {
+    public OrderSupply(TypeOfService typeOfService, Long wholesale) {
         this.typeOfService = typeOfService;
+        this.wholesale = wholesale;
+    }
+
+    public OrderSupply(TypeOfService typeOfService) {
+        this.typeOfService = typeOfService;
+        this.wholesale = null;
     }
 
 
