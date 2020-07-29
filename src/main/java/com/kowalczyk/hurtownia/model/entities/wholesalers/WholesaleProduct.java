@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Data
@@ -40,6 +41,7 @@ public class WholesaleProduct {
         this.quantity = quantity;
         this.product = product;
         this.wholesale = wholesale;
+        this.id = new WholesaleProductId(product.getId(),wholesale.getId());
     }
 
     public void addProduct(Long quantity)
@@ -72,6 +74,12 @@ public class WholesaleProduct {
     {
         return "WholesaleProduct";
     }
+
+    public boolean count(Map<String, Long> productsCount) {
+        return productsCount.get(product.getNameOfProduct())!=null
+                && productsCount.get(product.getNameOfProduct()) <=quantity;
+    }
+
 
 
 }

@@ -4,7 +4,6 @@ import com.kowalczyk.hurtownia.model.entities.wholesalers.WholesaleProduct;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Entity
@@ -14,17 +13,17 @@ public class OrderSupllyWholesaleProduct {
 
     @EmbeddedId
     private OrderSupllyWholesaleProductId id;
-    private Long quantity;
+    private final Long quantity;
     private final OrderSupply.TypeOfService typeOfService;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("wholesaleProductId")
-    private final WholesaleProduct wholesaleProduct;
+    private  WholesaleProduct wholesaleProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderSupplyId")
-    private final OrderSupply orderSupply;
+    private  OrderSupply orderSupply;
 
 
     public OrderSupllyWholesaleProduct(Long quantity, WholesaleProduct wholesaleProduct, OrderSupply orderSupply) {
@@ -32,6 +31,8 @@ public class OrderSupllyWholesaleProduct {
         this.wholesaleProduct = wholesaleProduct;
         this.orderSupply = orderSupply;
         this.typeOfService = this.orderSupply.getTypeOfService();
+        this.id = new OrderSupllyWholesaleProductId(wholesaleProduct.getId(),orderSupply.getId());
+
     }
 
 

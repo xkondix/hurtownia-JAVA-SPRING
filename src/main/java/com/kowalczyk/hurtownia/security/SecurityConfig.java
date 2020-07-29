@@ -1,5 +1,6 @@
 package com.kowalczyk.hurtownia.security;
 
+
 import com.kowalczyk.hurtownia.model.services.employees.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,13 +19,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserAccountService userAccountService;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/employee/job,/api/employee/employee")
-                .access("hasRole('ROLE_ADMIN')")
+           //     .antMatchers("/api/employee/job,/api/employee/employee")
+             //   .access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/employee")
                 .access("hasRole('ROLE_USER')")
                 .antMatchers("/", "/**").access("permitAll")

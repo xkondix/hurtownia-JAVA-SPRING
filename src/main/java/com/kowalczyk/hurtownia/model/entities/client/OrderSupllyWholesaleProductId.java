@@ -1,11 +1,11 @@
 package com.kowalczyk.hurtownia.model.entities.client;
 
+import com.kowalczyk.hurtownia.model.entities.wholesalers.WholesaleProductId;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -15,14 +15,19 @@ import java.util.Objects;
 public class OrderSupllyWholesaleProductId implements Serializable {
 
 
+
     @Column(name = "product_id")
     private final Long productId;
+
+    @Column(name = "wholesale_id")
+    private final Long wholesaleId;
 
     @Column(name = "order_supply_id")
     private final Long orderSupplyId;
 
-    public OrderSupllyWholesaleProductId(Long productId, Long orderSupplyId) {
-        this.productId = productId;
+    public OrderSupllyWholesaleProductId(WholesaleProductId wholesaleProductId, Long orderSupplyId) {
+        this.productId = wholesaleProductId.getProductId();
+        this.wholesaleId = wholesaleProductId.getWholesaleId() ;
         this.orderSupplyId = orderSupplyId;
     }
 
@@ -36,12 +41,13 @@ public class OrderSupllyWholesaleProductId implements Serializable {
 
         OrderSupllyWholesaleProductId that = (OrderSupllyWholesaleProductId) o;
         return Objects.equals(productId, that.productId) &&
+                Objects.equals(wholesaleId, that.wholesaleId) &&
                 Objects.equals(orderSupplyId, that.orderSupplyId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, orderSupplyId);
+        return Objects.hash(productId, orderSupplyId,wholesaleId);
     }
 }
 
