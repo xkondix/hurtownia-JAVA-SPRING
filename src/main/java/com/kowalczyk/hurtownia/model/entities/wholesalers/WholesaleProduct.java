@@ -76,8 +76,8 @@ public class WholesaleProduct {
     }
 
     public boolean count(Map<String, Long> productsCount) {
-        return productsCount.get(product.getNameOfProduct())!=null
-                && productsCount.get(product.getNameOfProduct()) <=quantity;
+        Long quantityOrder = productsCount.get(product.getNameOfProduct());
+        return ((quantityOrder!=null) && (quantityOrder <= quantity));
     }
 
 

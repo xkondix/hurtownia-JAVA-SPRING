@@ -51,7 +51,6 @@ public class OrderSupply implements Serializable {
 
     @PrePersist
     void placedAt() {
-        System.out.println("xd");
         this.createdAt = new Date();
     }
 

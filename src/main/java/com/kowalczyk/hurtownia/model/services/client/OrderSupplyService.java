@@ -54,7 +54,7 @@ public class OrderSupplyService {
             }
         }
 
-        orderSupplyRepository.save(orderSupply);
+        //orderSupplyRepository.save(orderSupply);
 
         if (orderSupply.getTypeOfService().equals(ORDER)) {
             saveOrder(orderSupply, orderSupplyRestModel);
@@ -90,7 +90,7 @@ public class OrderSupplyService {
                                 .filter(y -> y.count(orderSupplyRestModel.getProductsCount()))
                                 .count()));
 
-       wholesales.stream().forEach(System.out::println);
+        algorytm.entrySet().stream().forEach(System.out::println);
 
 
     }
