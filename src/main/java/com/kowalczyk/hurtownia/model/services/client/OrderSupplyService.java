@@ -1,6 +1,7 @@
 package com.kowalczyk.hurtownia.model.services.client;
 
 import com.kowalczyk.hurtownia.model.entities.client.Client;
+import com.kowalczyk.hurtownia.model.entities.client.OrderSupllyWholesaleProduct;
 import com.kowalczyk.hurtownia.model.entities.client.OrderSupply;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.Wholesale;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.WholesaleProduct;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -54,7 +56,7 @@ public class OrderSupplyService {
             }
         }
 
-        //orderSupplyRepository.save(orderSupply);
+        orderSupplyRepository.save(orderSupply);
 
         if (orderSupply.getTypeOfService().equals(ORDER)) {
             saveOrder(orderSupply, orderSupplyRestModel);
@@ -84,13 +86,51 @@ public class OrderSupplyService {
 
          List<Wholesale> wholesales = wholesaleRepository.findAll();
 
-        Map<Wholesale,Long> algorytm = wholesales.stream()
-                .collect(Collectors.toMap(Function.identity(),
-                        x -> x.getProducts().stream()
-                                .filter(y -> y.count(orderSupplyRestModel.getProductsCount()))
-                                .count()));
+         Map<String,Long> order = orderSupplyRestModel.getProductsCount();
 
-        algorytm.entrySet().stream().forEach(System.out::println);
+        while(order.size()>0) {
+
+            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+             Wholesale wholesale = wholesales.stream()
+                     .collect(Collectors.toMap(Function.identity(),
+                             x -> x.getProducts().stream()
+                                     .filter(y -> y.count(orderSupplyRestModel.getProductsCount()))
+                                     .count()))
+                     .entrySet().stream()
+                     .max((entry1, entry2) -> entry1.getValue() >= entry2.getValue()
+                             ? 1 : -1).get().getKey();
+
+
+             wholesales.remove(wholesale);
+             List<WholesaleProduct> wholesaleProduct = wholesale.getProducts();
+
+             order = order.entrySet().stream().filter( product -> {
+                 Optional<WholesaleProduct> wholesaleProductOptional
+                         = wholesaleProduct.stream().filter(
+                         x -> x.getProduct().getNameOfProduct()
+                                 .equals(product.getKey())).findFirst();
+
+
+                 if(wholesaleProductOptional.isPresent())
+                 {
+                     wholesaleProductOptional.get().subtractProduct(product.getValue());
+                     wholesaleProductRepository.save(wholesaleProductOptional.get());
+                     orderSupplyWholesaleProductRepository.save(
+                             new OrderSupllyWholesaleProduct(
+                                     product.getValue(), wholesaleProductOptional.get(),orderSupply)
+                     );
+                     return false;
+                 }
+                 return true;
+
+             }).collect(Collectors.toMap(
+                     key -> key.getKey(),
+                     val -> val.getValue()
+             ));
+            System.out.println(order);
+         }
+
+
 
 
     }

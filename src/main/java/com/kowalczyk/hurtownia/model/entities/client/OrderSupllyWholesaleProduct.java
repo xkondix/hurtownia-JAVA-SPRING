@@ -17,8 +17,8 @@ public class OrderSupllyWholesaleProduct {
     private final OrderSupply.TypeOfService typeOfService;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("wholesaleProductId")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@MapsId("wholesaleProductId")  does not work with this
     private  WholesaleProduct wholesaleProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)

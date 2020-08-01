@@ -5,6 +5,7 @@ import com.kowalczyk.hurtownia.model.entities.client.OrderSupllyWholesaleProduct
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class WholesaleProduct {
     @EmbeddedId
     private WholesaleProductId id;
     private Long quantity;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
