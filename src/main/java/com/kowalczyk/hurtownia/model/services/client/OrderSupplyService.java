@@ -62,7 +62,9 @@ public class OrderSupplyService {
             saveOrder(orderSupply, orderSupplyRestModel);
         }
         else{
-            saveSupply(orderSupply, orderSupplyRestModel);
+            if(!orderSupply.getWholesale().equals(null)) {
+                saveSupply(orderSupply, orderSupplyRestModel);
+            }
         }
 
     }
@@ -90,7 +92,6 @@ public class OrderSupplyService {
 
         while(order.size()>0) {
 
-            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
              Wholesale wholesale = wholesales.stream()
                      .collect(Collectors.toMap(Function.identity(),
                              x -> x.getProducts().stream()
@@ -102,11 +103,11 @@ public class OrderSupplyService {
 
 
              wholesales.remove(wholesale);
-             List<WholesaleProduct> wholesaleProduct = wholesale.getProducts();
+             List<WholesaleProduct> wholesaleProducts = wholesale.getProducts();
 
              order = order.entrySet().stream().filter( product -> {
                  Optional<WholesaleProduct> wholesaleProductOptional
-                         = wholesaleProduct.stream().filter(
+                         = wholesaleProducts.stream().filter(
                          x -> x.getProduct().getNameOfProduct()
                                  .equals(product.getKey())).findFirst();
 
@@ -127,7 +128,6 @@ public class OrderSupplyService {
                      key -> key.getKey(),
                      val -> val.getValue()
              ));
-            System.out.println(order);
          }
 
 
@@ -139,6 +139,37 @@ public class OrderSupplyService {
 
     private void saveSupply(OrderSupply orderSupply
             , OrderSupplyRestModel orderSupplyRestModel) {
+
+        Optional<Wholesale> wholesale = wholesaleRepository
+                .findById(orderSupplyRestModel.getWholesaleId());
+
+
+        if(wholesale.isPresent())
+        {
+            List<WholesaleProduct> wholesaleProducts = wholesale.get().getProducts();
+            Map<String,Long> supply = orderSupplyRestModel.getProductsCount();
+            supply.entrySet().stream().forEach( product -> {
+                Optional<WholesaleProduct> wholesaleProductOptional
+                        = wholesaleProducts.stream().filter(
+                        x -> x.getProduct().getNameOfProduct()
+                                .equals(product.getKey())).findFirst();
+
+
+                if(wholesaleProductOptional.isPresent())
+                {
+                    wholesaleProductOptional.get().addProduct(product.getValue());
+                    wholesaleProductRepository.save(wholesaleProductOptional.get());
+                    orderSupplyWholesaleProductRepository.save(
+                            new OrderSupllyWholesaleProduct(
+                                    product.getValue(), wholesaleProductOptional.get(),orderSupply)
+                    );
+                }
+
+            });
+        }
+
+
+
     }
 
 
