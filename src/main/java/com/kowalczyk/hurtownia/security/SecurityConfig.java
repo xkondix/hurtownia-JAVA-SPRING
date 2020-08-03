@@ -21,10 +21,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.httpBasic()
+                .and()
                 .authorizeRequests()
-           //     .antMatchers("/api/employee/job,/api/employee/employee")
-             //   .access("hasRole('ROLE_ADMIN')")
+                //.antMatchers("/api/employee/job,/api/employee/employee")
+                //.access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/employee")
                 .access("hasRole('ROLE_USER')")
                 .antMatchers("/", "/**").access("permitAll")
