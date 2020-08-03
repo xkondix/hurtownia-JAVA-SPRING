@@ -3,11 +3,13 @@ package com.kowalczyk.hurtownia.model.services.client;
 import com.kowalczyk.hurtownia.model.entities.client.Client;
 import com.kowalczyk.hurtownia.model.entities.client.OrderSupllyWholesaleProduct;
 import com.kowalczyk.hurtownia.model.entities.client.OrderSupply;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.Wholesale;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.WholesaleProduct;
 import com.kowalczyk.hurtownia.model.repositories.client.ClientRepository;
 import com.kowalczyk.hurtownia.model.repositories.client.OrderSupplyRepository;
 import com.kowalczyk.hurtownia.model.repositories.client.OrderSupplyWholesaleProductRepository;
+import com.kowalczyk.hurtownia.model.repositories.wholesalers.ProductRepository;
 import com.kowalczyk.hurtownia.model.repositories.wholesalers.WholesaleProductRepository;
 import com.kowalczyk.hurtownia.model.repositories.wholesalers.WholesaleRepository;
 import com.kowalczyk.hurtownia.model.responses.client.OrderSupplyRestModel;
@@ -17,11 +19,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.kowalczyk.hurtownia.model.entities.client.OrderSupply.TypeOfService.ORDER;
+import static com.kowalczyk.hurtownia.model.entities.client.OrderSupply.TypeOfService.SUPPLY;
 
 @Service
 public class OrderSupplyService {
@@ -31,16 +33,18 @@ public class OrderSupplyService {
     private final WholesaleProductRepository wholesaleProductRepository;
     private final ClientRepository clientRepository;
     private final WholesaleRepository wholesaleRepository;
+    private final ProductRepository productRepository;
 
 
     public OrderSupplyService(OrderSupplyWholesaleProductRepository orderSupplyWholesaleProductRepository
             , OrderSupplyRepository orderSupplyRepository
-            , WholesaleProductRepository wholesaleProductRepository, ClientRepository clientRepository, WholesaleRepository wholesaleRepository) {
+            , WholesaleProductRepository wholesaleProductRepository, ClientRepository clientRepository, WholesaleRepository wholesaleRepository, ProductRepository productRepository) {
         this.orderSupplyWholesaleProductRepository = orderSupplyWholesaleProductRepository;
         this.orderSupplyRepository = orderSupplyRepository;
         this.wholesaleProductRepository = wholesaleProductRepository;
         this.clientRepository = clientRepository;
         this.wholesaleRepository = wholesaleRepository;
+        this.productRepository = productRepository;
     }
 
 
@@ -72,7 +76,7 @@ public class OrderSupplyService {
 
 
     //methods
-    public OrderSupply mapToEntity(OrderSupplyRestModel orderSupplyRestModel)
+    private OrderSupply mapToEntity(OrderSupplyRestModel orderSupplyRestModel)
     {
         Optional<Client> client = clientRepository.findById(orderSupplyRestModel.getClientid());
         if(client.isPresent()) {
@@ -114,12 +118,8 @@ public class OrderSupplyService {
 
                  if(wholesaleProductOptional.isPresent())
                  {
-                     wholesaleProductOptional.get().subtractProduct(product.getValue());
-                     wholesaleProductRepository.save(wholesaleProductOptional.get());
-                     orderSupplyWholesaleProductRepository.save(
-                             new OrderSupllyWholesaleProduct(
-                                     product.getValue(), wholesaleProductOptional.get(),orderSupply)
-                     );
+                     saveOrderSupplyWholesaleProduct(wholesaleProductOptional.get()
+                             ,product.getValue(),orderSupply,ORDER);
                      return false;
                  }
                  return true;
@@ -157,19 +157,40 @@ public class OrderSupplyService {
 
                 if(wholesaleProductOptional.isPresent())
                 {
-                    wholesaleProductOptional.get().addProduct(product.getValue());
-                    wholesaleProductRepository.save(wholesaleProductOptional.get());
-                    orderSupplyWholesaleProductRepository.save(
-                            new OrderSupllyWholesaleProduct(
-                                    product.getValue(), wholesaleProductOptional.get(),orderSupply)
-                    );
+                    saveOrderSupplyWholesaleProduct(wholesaleProductOptional.get()
+                    ,product.getValue(),orderSupply,SUPPLY);
+                }
+                else
+                {
+                    createWholesaleProduct(product.getKey(),product.getValue(),wholesale.get());
                 }
 
             });
         }
 
+    }
 
+    private void saveOrderSupplyWholesaleProduct(WholesaleProduct wholesaleProduct, Long product, OrderSupply orderSupply, OrderSupply.TypeOfService type)
+    {
+        if (type.equals(ORDER)) {
+            wholesaleProduct.subtractProduct(product);
+        } else {
+            wholesaleProduct.addProduct(product);
+        }
 
+        wholesaleProductRepository.save(wholesaleProduct);
+        orderSupplyWholesaleProductRepository.save(
+                new OrderSupllyWholesaleProduct(
+                        product, wholesaleProduct,orderSupply));
+    }
+
+    private void createWholesaleProduct(String name,Long value, Wholesale wholesale)
+    {
+        Optional<Product> product = productRepository.findByNameOfProduct(name);
+        if(product.isPresent())
+        {
+            wholesaleProductRepository.save(new WholesaleProduct(value,product.get(),wholesale));
+        }
     }
 
 

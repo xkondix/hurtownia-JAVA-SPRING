@@ -23,8 +23,18 @@ public class Client {
     )
     private List<OrderSupply> orders = new ArrayList<>();
 
-    public Client(TypeOfClient typeOfClient) {
+    @OneToOne()
+    @JoinColumn(name = "address_id")
+    private final Address address;
+
+    @OneToOne()
+    @JoinColumn(name = "contact_details_id")
+    private final ContactDetails contactDetails;
+
+    public Client(TypeOfClient typeOfClient, Address address, ContactDetails contactDetails) {
         this.typeOfClient = typeOfClient;
+        this.address = address;
+        this.contactDetails = contactDetails;
     }
 
 

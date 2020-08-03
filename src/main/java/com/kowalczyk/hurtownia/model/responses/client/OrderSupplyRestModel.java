@@ -18,14 +18,14 @@ public class OrderSupplyRestModel {
 
     public OrderSupplyRestModel(Map<String, Long> productsCount, String type, Long wholesaleId, Long clientid) {
         this.productsCount = productsCount;
-        this.type = TypeOfService.valueOf(type);
+        this.type = TypeOfService.valueOf(type.toUpperCase());
         this.wholesaleId = wholesaleId;
         this.clientid = clientid;
     }
 
     public OrderSupplyRestModel(Map<String, Long> productsCount, String type, Long clientid) {
         this.productsCount = productsCount;
-        this.type = TypeOfService.valueOf(type);
+        this.type = TypeOfService.valueOf(type.toUpperCase());
         this.clientid = clientid;
         this.wholesaleId = null;
     }
