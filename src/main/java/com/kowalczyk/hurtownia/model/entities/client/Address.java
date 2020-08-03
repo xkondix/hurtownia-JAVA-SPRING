@@ -43,4 +43,26 @@ public class Address {
         this.deliveryState = deliveryState;
         this.deliveryZip = deliveryZip;
     }
+
+    public String toString()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("State : ");
+        stringBuilder.append(deliveryState);
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("City : ");
+        stringBuilder.append(deliveryCity);
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("Street : ");
+        stringBuilder.append(deliveryStreet);
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("Building Number : ");
+        stringBuilder.append(deliveryBuildingNumber);
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("Zip : ");
+        stringBuilder.append(deliveryZip);
+        stringBuilder.append(System.getProperty("line.separator"));
+        return stringBuilder.toString();
+
+    }
 }

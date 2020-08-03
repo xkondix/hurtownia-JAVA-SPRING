@@ -1,5 +1,6 @@
 package com.kowalczyk.hurtownia.model.services.client;
 
+import com.kowalczyk.hurtownia.email.EmailService;
 import com.kowalczyk.hurtownia.model.entities.client.Client;
 import com.kowalczyk.hurtownia.model.entities.client.OrderSupllyWholesaleProduct;
 import com.kowalczyk.hurtownia.model.entities.client.OrderSupply;
@@ -16,6 +17,7 @@ import com.kowalczyk.hurtownia.model.responses.client.OrderSupplyRestModel;
 import javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,17 +36,19 @@ public class OrderSupplyService {
     private final ClientRepository clientRepository;
     private final WholesaleRepository wholesaleRepository;
     private final ProductRepository productRepository;
+    private final EmailService emailService;
 
 
     public OrderSupplyService(OrderSupplyWholesaleProductRepository orderSupplyWholesaleProductRepository
             , OrderSupplyRepository orderSupplyRepository
-            , WholesaleProductRepository wholesaleProductRepository, ClientRepository clientRepository, WholesaleRepository wholesaleRepository, ProductRepository productRepository) {
+            , WholesaleProductRepository wholesaleProductRepository, ClientRepository clientRepository, WholesaleRepository wholesaleRepository, ProductRepository productRepository, EmailService emailService) {
         this.orderSupplyWholesaleProductRepository = orderSupplyWholesaleProductRepository;
         this.orderSupplyRepository = orderSupplyRepository;
         this.wholesaleProductRepository = wholesaleProductRepository;
         this.clientRepository = clientRepository;
         this.wholesaleRepository = wholesaleRepository;
         this.productRepository = productRepository;
+        this.emailService = emailService;
     }
 
 
@@ -90,9 +94,9 @@ public class OrderSupplyService {
     private void saveOrder(OrderSupply orderSupply
             , OrderSupplyRestModel orderSupplyRestModel) {
 
-         List<Wholesale> wholesales = wholesaleRepository.findAll();
-
-         Map<String,Long> order = orderSupplyRestModel.getProductsCount();
+        List<Wholesale> wholesales = wholesaleRepository.findAll();
+        Map<WholesaleProduct,Long> wholesaleProductEmail = new HashMap<>();
+        Map<String,Long> order = orderSupplyRestModel.getProductsCount();
 
         while(order.size()>0) {
 
@@ -120,6 +124,7 @@ public class OrderSupplyService {
                  {
                      saveOrderSupplyWholesaleProduct(wholesaleProductOptional.get()
                              ,product.getValue(),orderSupply,ORDER);
+                     wholesaleProductEmail.put(wholesaleProductOptional.get(),product.getValue());
                      return false;
                  }
                  return true;
@@ -128,10 +133,11 @@ public class OrderSupplyService {
                      key -> key.getKey(),
                      val -> val.getValue()
              ));
+
          }
 
-
-
+        sendEmail(wholesaleProductEmail,orderSupply,
+                clientRepository.findById(orderSupplyRestModel.getClientid()).get());
 
     }
 
@@ -193,7 +199,15 @@ public class OrderSupplyService {
         }
     }
 
+    public void sendEmail(Map<WholesaleProduct,Long> wholesaleProductEmail
+            ,OrderSupply orderSupply,Client client)
+    {
+        String content =
+                emailService.createContent(wholesaleProductEmail,orderSupply,client);
+        emailService.sendEmail(client.getContactDetails().getEmail()
+                ,"Your Order",content);
 
+    }
 
 
 

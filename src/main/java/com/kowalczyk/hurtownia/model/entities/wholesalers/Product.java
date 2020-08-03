@@ -42,4 +42,10 @@ public class Product {
         this.productCode = productCode;
         this.category = category;
     }
+
+    public String toString()
+    {
+        return "Name of product : " +nameOfProduct+ " Brand : "+brand
+                +" Product Code : "+productCode +" Category : "+category.getNameOfCategory();
+    }
 }
