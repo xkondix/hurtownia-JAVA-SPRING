@@ -40,18 +40,27 @@ public class EmailService implements EmailInterface{
     public String createContent(Map<WholesaleProduct,Long>  wholesaleProducts
             , OrderSupply orderSupply, Client client) {
         StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Product List");
+        stringBuilder.append(System.getProperty("line.separator"));
+
         wholesaleProducts.entrySet().stream().forEach(product ->
         {
             stringBuilder.append(product.getKey().getProduct().toString());
             stringBuilder.append(" Quantity : ");
             stringBuilder.append(product.getValue());
+            stringBuilder.append(System.getProperty("line.separator"));
             stringBuilder.append(" Price : ");
             stringBuilder.append(product.getValue()*product.getKey().getProduct().getPricePerItem());
             stringBuilder.append("zł");
             stringBuilder.append(System.getProperty("line.separator"));
+            stringBuilder.append("------------------------");
+            stringBuilder.append(System.getProperty("line.separator"));
+
         });
 
         stringBuilder.append("Contact Details");
+        stringBuilder.append(System.getProperty("line.separator"));
         stringBuilder.append(client.getAddress());
         stringBuilder.append(System.getProperty("line.separator"));
         stringBuilder.append("Phone number : ");

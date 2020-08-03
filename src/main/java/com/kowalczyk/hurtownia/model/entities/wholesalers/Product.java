@@ -43,9 +43,20 @@ public class Product {
         this.category = category;
     }
 
-    public String toString()
-    {
-        return "Name of product : " +nameOfProduct+ " Brand : "+brand
-                +" Product Code : "+productCode +" Category : "+category.getNameOfCategory();
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Name of product : ");
+        stringBuilder.append(nameOfProduct);
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("Brand : ");
+        stringBuilder.append(brand);
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("Product Code : ");
+        stringBuilder.append(productCode);
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append("Category : ");
+        stringBuilder.append(category.getNameOfCategory());
+        stringBuilder.append(System.getProperty("line.separator"));
+        return stringBuilder.toString();
     }
 }
