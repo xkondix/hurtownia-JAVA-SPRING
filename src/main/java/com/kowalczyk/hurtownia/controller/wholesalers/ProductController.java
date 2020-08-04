@@ -1,6 +1,7 @@
 package com.kowalczyk.hurtownia.controller.wholesalers;
 
 import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepresentationModel;
+import com.kowalczyk.hurtownia.model.responses.employees.JobPositionEmployeeRestModel;
 import com.kowalczyk.hurtownia.model.responses.wholesalers.ProductRestModel;
 import com.kowalczyk.hurtownia.model.services.wholesalers.ProductService;
 import org.springframework.hateoas.CollectionModel;
@@ -41,19 +42,19 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-//    @GetMapping("product/{name}")
-//    public ResponseEntity<ProductRepresentationModel> getByName(@PathVariable String name) {
-//        System.out.println(name);
-//        ProductRepresentationModel product = productService.getByName(name);
-//        product.add(linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
-//        return ResponseEntity.ok(product);
-//    }
+    @PatchMapping("product/{id}")
+    public void patchProduct(@RequestBody ProductRestModel productRestModel
+            , @PathVariable("employeeId") Long id) {
+        productService.patchProduct(productRestModel,id);
+    }
 
-//    @GetMapping("product/{brand}")
-//    public ResponseEntity<ProductRepresentationModel> getByBrand(@PathVariable String brand) {
-//        ProductRepresentationModel product = productService.getByBrand(brand);
-//        product.add(linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
-//        return ResponseEntity.ok(product);
-//    }
+    @PutMapping("product/{id}")
+    public void putProduct(@RequestBody ProductRestModel productRestModel
+            , @PathVariable("employeeId") Long id)
+    {
+        productService.putProduct(productRestModel,id);
+    }
+
+
 
 }

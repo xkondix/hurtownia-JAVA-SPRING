@@ -20,7 +20,7 @@ public class Product {
     private Long id;
     private final String nameOfProduct;
     private final String brand;
-    private final Double pricePerItem;
+    private Double pricePerItem;
     private final String productCode;
 
     @ManyToOne()

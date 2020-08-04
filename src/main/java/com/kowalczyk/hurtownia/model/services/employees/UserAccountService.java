@@ -18,6 +18,35 @@ public class UserAccountService implements UserDetailsService {
     }
 
 
+    public void patchUser(UserAccountRestModel userAccountRestModel, String username) {
+
+        UserAccount userAccount = userAccountRespository.findByUsername(username);
+        if(userAccountRestModel.getPassword()!=null)
+        {
+            userAccount.setPassword(userAccountRestModel.getPassword());
+        }
+        if(userAccountRestModel.getRoles()!=null)
+        {
+            userAccount.setAuthorities(userAccountRestModel.getRoles());
+        }
+        if(userAccountRestModel.getActive()!=null)
+        {
+            userAccount.setActive(userAccountRestModel.getActive());
+        }
+        userAccountRespository.save(userAccount);
+    }
+
+    public void putUser(UserAccountRestModel userAccountRestModel, String username) {
+    UserAccount userAccount = userAccountRestModel.mapToEntity();
+    userAccount.setId(userAccountRespository.findByUsername(username).getId());
+    userAccountRespository.save(userAccount);
+    }
+
+    public void saveUser(UserAccountRestModel userAccountRestModel) {
+        userAccountRespository.save(userAccountRestModel.mapToEntity());
+    }
+
+
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
@@ -31,7 +60,5 @@ public class UserAccountService implements UserDetailsService {
     }
 
 
-    public void saveUser(UserAccountRestModel userAccountRestModel) {
-        userAccountRespository.save(userAccountRestModel.mapToEntity());
-    }
+
 }

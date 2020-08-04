@@ -21,10 +21,10 @@ public class UserAccount implements UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private final String username;
-    private final String password;
-    private final boolean active;
-    private final String authorities;
+    private  String username;
+    private  String password;
+    private  Boolean active;
+    private  String authorities;
 
     @OneToOne(mappedBy = "userAccount")
     private Employee employee;

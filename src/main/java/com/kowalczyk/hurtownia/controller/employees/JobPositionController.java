@@ -36,4 +36,6 @@ private final JobPositionService jobPositionService;
     {
         jobPositionService.save(jobPositionRestModel);
     }
+
+
 }

@@ -18,7 +18,7 @@ public class JobPositionEmployee {
 
     private final Double reward;
     private final java.util.Date dataOfStart;
-    private final java.util.Date dataOfEnd;
+    private  java.util.Date dataOfEnd;
 
 
     @EmbeddedId

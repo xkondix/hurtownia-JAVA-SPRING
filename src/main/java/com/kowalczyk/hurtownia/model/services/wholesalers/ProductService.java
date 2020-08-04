@@ -1,5 +1,6 @@
 package com.kowalczyk.hurtownia.model.services.wholesalers;
 
+import com.kowalczyk.hurtownia.model.entities.employees.Employee;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
 import com.kowalczyk.hurtownia.model.repositories.wholesalers.CategoryRepository;
 import com.kowalczyk.hurtownia.model.repositories.wholesalers.ProductRepository;
@@ -33,7 +34,7 @@ public class ProductService {
     }
 
     public void saveProduct(ProductRestModel product) {
-        productRepository.save(mapRestModel(product));
+        productRepository.save(mapToEntity(product));
     }
 
     public ProductRepresentationModel getById(Long id)
@@ -76,13 +77,40 @@ public class ProductService {
 
     }
 
+    public void putProduct(ProductRestModel productRestModel, Long id) {
+        Product product = mapToEntity(productRestModel);
+        product.setId(id);
+        productRepository.save(product);
+    }
+
+    public void patchProduct(ProductRestModel productRestModel, Long id) {
+
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if(productOptional.isPresent())
+        {
+            Product product = productOptional.get();
+            if(productRestModel.getCategoryId()!=null)
+            {
+                product.setCategory(categoryRespository
+                        .findById(productRestModel.getCategoryId()).get());
+            }
+            if(productRestModel.getPricePerItem()!=null)
+            {
+                product.setPricePerItem(productRestModel.getPricePerItem());
+            }
+            productRepository.save(product);
+        }
+
+    }
+
 
 
 
     //methods
 
     @SneakyThrows
-    private Product mapRestModel(final ProductRestModel model) {
+    private Product mapToEntity(final ProductRestModel model) {
         return new Product(model.getNameOfProduct(),model.getBrand(),model.getPricePerItem()
         ,model.getProductCode(),(categoryRespository.findById(model.getCategoryId())).get());
     }

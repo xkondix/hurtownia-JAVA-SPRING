@@ -11,7 +11,7 @@ public class UserAccountRestModel {
 
     private final String username;
     private final String password;
-    private final boolean active;
+    private final Boolean active;
     private final String roles;
 
     public UserAccountRestModel(String username, String password, boolean active, String roles) {

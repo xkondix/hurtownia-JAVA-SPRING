@@ -21,7 +21,7 @@ public class Employee {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private final String name;
-    private final String surename;
+    private String surename;
 
 
 
@@ -42,11 +42,12 @@ public class Employee {
     private Wholesale wholesale;
 
 
-    public Employee(String name, String surename, UserAccount userAccount)
+    public Employee(String name, String surename, UserAccount userAccount,Wholesale wholesale)
     {
         this.surename=surename;
         this.name = name;
         this.userAccount = userAccount;
+        this.wholesale = wholesale;
     }
 
 }

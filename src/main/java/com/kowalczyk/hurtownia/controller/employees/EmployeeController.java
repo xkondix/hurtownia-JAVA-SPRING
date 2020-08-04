@@ -26,17 +26,13 @@ public class EmployeeController {
         this.userAccountService = userAccountService;
     }
 
+    //Employee
+
     @GetMapping("employee")
     public EmployeeRepresentationModel getUser(
             @AuthenticationPrincipal UserAccount userAccount)
     {
         return employeeService.getById(userAccount);
-    }
-
-    @PostMapping("employee/job")
-    public void saveJob(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel)
-    {
-        jobPositionEmployeeService.saveJob(jobPositionEmployeeRestModel);
     }
 
     @PostMapping("employee/employee")
@@ -45,10 +41,62 @@ public class EmployeeController {
         employeeService.saveEmployee(employeeRestModel);
     }
 
+    @PatchMapping("/employee/employee/{id}")
+    public void patchUpdateEmployee(@RequestBody EmployeeRestModel employeeRestModel
+            , @PathVariable("id") Long id) {
+        employeeService.patchEmployee(employeeRestModel,id);
+    }
+
+    @PutMapping("/employee/employee/{id}")
+    public void putUpdateEmployee(@RequestBody EmployeeRestModel employeeRestModel
+            , @PathVariable("id") Long id) {
+        employeeService.putEmployee(employeeRestModel,id);
+    }
+
+    //UserAccount
+
     @PostMapping("employee/userAccount")
     public void saveUserAcounnt(@RequestBody UserAccountRestModel userAccountRestModel)
     {
         userAccountService.saveUser(userAccountRestModel);
     }
+
+    @PatchMapping("/employee/userAccount/{username}")
+    public void patchUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
+            , @PathVariable("username") String username) {
+        userAccountService.patchUser(userAccountRestModel,username);
+    }
+
+    @PutMapping("/employee/userAccount/{username}")
+    public void putUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
+            , @PathVariable("username") String username) {
+        userAccountService.putUser(userAccountRestModel,username);
+
+    }
+
+    //JobPositionEmployee
+
+    @PostMapping("employee/position")
+    public void saveJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel)
+    {
+        jobPositionEmployeeService.saveJob(jobPositionEmployeeRestModel);
+    }
+
+    @PatchMapping("/employee/position/{jobId}/conf/{employeeId}")
+    public void patchUpdateJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel
+            , @PathVariable("employeeId") Long employeeId
+            , @PathVariable("jobId") Long jobId) {
+        jobPositionEmployeeService.patchJob(jobPositionEmployeeRestModel,employeeId,jobId);
+    }
+
+    @PutMapping("/employee/position/{jobId}/conf/{employeeId}")
+    public void putUpdateJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel
+            , @PathVariable("employeeId") Long employeeId
+            , @PathVariable("jobId") Long jobId) {
+        jobPositionEmployeeService.putJob(jobPositionEmployeeRestModel,employeeId,jobId);
+
+    }
+
+
 
 }
