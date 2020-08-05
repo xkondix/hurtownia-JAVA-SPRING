@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 
 import static com.kowalczyk.hurtownia.model.entities.client.OrderSupply.TypeOfService.ORDER;
 import static com.kowalczyk.hurtownia.model.entities.client.OrderSupply.TypeOfService.SUPPLY;
+import static java.lang.Integer.getInteger;
+import static java.lang.Integer.sum;
 
 @Service
 public class OrderSupplyService {
@@ -97,8 +99,8 @@ public class OrderSupplyService {
         List<Wholesale> wholesales = wholesaleRepository.findAll();
         Map<WholesaleProduct,Long> wholesaleProductEmail = new HashMap<>();
         Map<String,Long> order = orderSupplyRestModel.getProductsCount();
-
-        while(order.size()>0) {
+        int i = wholesales.size();
+        while(order.size()>0 && i>0 ){
 
              Wholesale wholesale = wholesales.stream()
                      .collect(Collectors.toMap(Function.identity(),
@@ -116,16 +118,24 @@ public class OrderSupplyService {
              order = order.entrySet().stream().filter( product -> {
                  Optional<WholesaleProduct> wholesaleProductOptional
                          = wholesaleProducts.stream().filter(
-                         x -> x.getProduct().getNameOfProduct()
-                                 .equals(product.getKey())).findFirst();
+                         x -> (x.getProduct().getNameOfProduct().equals(product.getKey())
+                         )).findFirst();
 
 
                  if(wholesaleProductOptional.isPresent())
                  {
-                     saveOrderSupplyWholesaleProduct(wholesaleProductOptional.get()
-                             ,product.getValue(),orderSupply,ORDER);
-                     wholesaleProductEmail.put(wholesaleProductOptional.get(),product.getValue());
-                     return false;
+                     Long quanity = saveOrderWholesaleProduct(wholesaleProductOptional.get()
+                             ,product.getValue(),orderSupply);
+                     if(quanity==0) {
+                         wholesaleProductEmail.put(wholesaleProductOptional.get(), product.getValue());
+                         return false;
+                     }
+                     else
+                     {
+                         wholesaleProductEmail.put(wholesaleProductOptional.get(), quanity);
+                         product.setValue(quanity);
+                         return true;
+                     }
                  }
                  return true;
 
@@ -134,6 +144,7 @@ public class OrderSupplyService {
                      val -> val.getValue()
              ));
 
+         i--;
          }
 
         sendEmail(wholesaleProductEmail,orderSupply,
@@ -154,7 +165,7 @@ public class OrderSupplyService {
         {
             List<WholesaleProduct> wholesaleProducts = wholesale.get().getProducts();
             Map<String,Long> supply = orderSupplyRestModel.getProductsCount();
-            supply.entrySet().stream().forEach( product -> {
+            supply.entrySet().forEach( product -> {
                 Optional<WholesaleProduct> wholesaleProductOptional
                         = wholesaleProducts.stream().filter(
                         x -> x.getProduct().getNameOfProduct()
@@ -163,8 +174,8 @@ public class OrderSupplyService {
 
                 if(wholesaleProductOptional.isPresent())
                 {
-                    saveOrderSupplyWholesaleProduct(wholesaleProductOptional.get()
-                    ,product.getValue(),orderSupply,SUPPLY);
+                    saveSupplyWholesaleProuct(wholesaleProductOptional.get()
+                    ,product.getValue(),orderSupply);
                 }
                 else
                 {
@@ -176,18 +187,37 @@ public class OrderSupplyService {
 
     }
 
-    private void saveOrderSupplyWholesaleProduct(WholesaleProduct wholesaleProduct, Long product, OrderSupply orderSupply, OrderSupply.TypeOfService type)
+    private void saveSupplyWholesaleProuct(WholesaleProduct wholesaleProduct
+            ,Long product, OrderSupply orderSupply)
     {
-        if (type.equals(ORDER)) {
-            wholesaleProduct.subtractProduct(product);
-        } else {
-            wholesaleProduct.addProduct(product);
-        }
-
+        wholesaleProduct.addProduct(product);
         wholesaleProductRepository.save(wholesaleProduct);
         orderSupplyWholesaleProductRepository.save(
                 new OrderSupllyWholesaleProduct(
                         product, wholesaleProduct,orderSupply));
+    }
+
+    private Long saveOrderWholesaleProduct(WholesaleProduct wholesaleProduct, Long product, OrderSupply orderSupply)
+    {
+        Long quanity = 0l;
+
+        if(product>wholesaleProduct.getQuantity())
+        {
+            quanity = product-wholesaleProduct.getQuantity();
+            wholesaleProduct.subtractProduct(wholesaleProduct.getQuantity());
+
+        }
+        else {
+            wholesaleProduct.subtractProduct(product);
+        }
+        wholesaleProductRepository.save(wholesaleProduct);
+        orderSupplyWholesaleProductRepository.save(
+                new OrderSupllyWholesaleProduct(
+                        quanity.equals(0) ? product : quanity
+                        ,wholesaleProduct, orderSupply));
+
+
+        return quanity;
     }
 
     private void createWholesaleProduct(String name,Long value, Wholesale wholesale)
@@ -202,6 +232,7 @@ public class OrderSupplyService {
     public void sendEmail(Map<WholesaleProduct,Long> wholesaleProductEmail
             ,OrderSupply orderSupply,Client client)
     {
+        //konwert do zrobienia
         String content =
                 emailService.createContent(wholesaleProductEmail,orderSupply,client);
         emailService.sendEmail(client.getContactDetails().getEmail()

@@ -44,7 +44,7 @@ public class EmailService implements EmailInterface{
         stringBuilder.append("Product List");
         stringBuilder.append(System.getProperty("line.separator"));
 
-        wholesaleProducts.entrySet().stream().forEach(product ->
+        wholesaleProducts.entrySet().forEach(product ->
         {
             stringBuilder.append(product.getKey().getProduct().toString());
             stringBuilder.append(" Quantity : ");
