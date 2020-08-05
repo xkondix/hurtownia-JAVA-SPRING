@@ -2,14 +2,13 @@ package com.kowalczyk.hurtownia.email;
 
 import com.kowalczyk.hurtownia.model.entities.client.Client;
 import com.kowalczyk.hurtownia.model.entities.client.OrderSupply;
-import com.kowalczyk.hurtownia.model.entities.wholesalers.WholesaleProduct;
+import com.kowalczyk.hurtownia.model.entities.wholesalers.Product;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -37,7 +36,7 @@ public class EmailService implements EmailInterface{
         javaMailSender.send(mail);
     }
 
-    public String createContent(Map<WholesaleProduct,Long>  wholesaleProducts
+    public String createContent(Map<Product,Long>  wholesaleProducts
             , OrderSupply orderSupply, Client client) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -46,12 +45,12 @@ public class EmailService implements EmailInterface{
 
         wholesaleProducts.entrySet().forEach(product ->
         {
-            stringBuilder.append(product.getKey().getProduct().toString());
+            stringBuilder.append(product.getKey().toString());
             stringBuilder.append(" Quantity : ");
             stringBuilder.append(product.getValue());
             stringBuilder.append(System.getProperty("line.separator"));
             stringBuilder.append(" Price : ");
-            stringBuilder.append(product.getValue()*product.getKey().getProduct().getPricePerItem());
+            stringBuilder.append(product.getValue()*product.getKey().getPricePerItem());
             stringBuilder.append("zł");
             stringBuilder.append(System.getProperty("line.separator"));
             stringBuilder.append("------------------------");

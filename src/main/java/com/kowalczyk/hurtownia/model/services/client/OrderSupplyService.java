@@ -25,9 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.kowalczyk.hurtownia.model.entities.client.OrderSupply.TypeOfService.ORDER;
-import static com.kowalczyk.hurtownia.model.entities.client.OrderSupply.TypeOfService.SUPPLY;
-import static java.lang.Integer.getInteger;
-import static java.lang.Integer.sum;
+
 
 @Service
 public class OrderSupplyService {
@@ -96,8 +94,13 @@ public class OrderSupplyService {
     private void saveOrder(OrderSupply orderSupply
             , OrderSupplyRestModel orderSupplyRestModel) {
 
+        final Map<Product,Long> wholesaleProductEmail = orderSupplyRestModel.getProductsCount()
+                .entrySet().stream()
+                .map(product -> productRepository.findByNameOfProduct(product.getKey()).get()).collect(Collectors.toMap(
+                        key -> key
+                        ,value -> orderSupplyRestModel.getProductsCount().get(value.getNameOfProduct())));
+
         List<Wholesale> wholesales = wholesaleRepository.findAll();
-        Map<WholesaleProduct,Long> wholesaleProductEmail = new HashMap<>();
         Map<String,Long> order = orderSupplyRestModel.getProductsCount();
         int i = wholesales.size();
         while(order.size()>0 && i>0 ){
@@ -127,12 +130,10 @@ public class OrderSupplyService {
                      Long quanity = saveOrderWholesaleProduct(wholesaleProductOptional.get()
                              ,product.getValue(),orderSupply);
                      if(quanity==0) {
-                         wholesaleProductEmail.put(wholesaleProductOptional.get(), product.getValue());
                          return false;
                      }
                      else
                      {
-                         wholesaleProductEmail.put(wholesaleProductOptional.get(), quanity);
                          product.setValue(quanity);
                          return true;
                      }
@@ -229,10 +230,9 @@ public class OrderSupplyService {
         }
     }
 
-    public void sendEmail(Map<WholesaleProduct,Long> wholesaleProductEmail
-            ,OrderSupply orderSupply,Client client)
+    public void sendEmail(Map<Product, Long> wholesaleProductEmail
+            , OrderSupply orderSupply, Client client)
     {
-        //konwert do zrobienia
         String content =
                 emailService.createContent(wholesaleProductEmail,orderSupply,client);
         emailService.sendEmail(client.getContactDetails().getEmail()
