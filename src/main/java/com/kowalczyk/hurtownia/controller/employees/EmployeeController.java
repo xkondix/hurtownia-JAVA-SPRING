@@ -53,6 +53,12 @@ public class EmployeeController {
         employeeService.putEmployee(employeeRestModel,id);
     }
 
+    @DeleteMapping("employee/{id}")
+    public void deleteProduct(@PathVariable Long id)
+    {
+        employeeService.deleteEmployee(id);
+    }
+
     //UserAccount
 
     @PostMapping("employee/userAccount")
@@ -97,11 +103,7 @@ public class EmployeeController {
 
     }
 
-    @DeleteMapping("employee/{id}")
-    public void deleteProduct(@PathVariable Long id)
-    {
-        employeeService.deleteEmployee(id);
-    }
+
 
 
 
