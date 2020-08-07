@@ -101,6 +101,14 @@ public class ProductService {
     }
 
 
+    public void deleteProduct(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent())
+        {
+            productRepository.delete(product.get());
+        }
+    }
+
 
 
     //methods
@@ -110,7 +118,6 @@ public class ProductService {
         return new Product(model.getNameOfProduct(),model.getBrand(),model.getPricePerItem()
         ,model.getProductCode(),(categoryRespository.findById(model.getCategoryId())).get());
     }
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.kowalczyk.hurtownia.model.services.employees;
 
 import com.kowalczyk.hurtownia.model.entities.employees.Employee;
+import com.kowalczyk.hurtownia.model.entities.employees.JobPositionEmployee;
 import com.kowalczyk.hurtownia.model.entities.employees.UserAccount;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.Wholesale;
 import com.kowalczyk.hurtownia.model.repositories.employees.EmployeeRepository;
@@ -12,6 +13,7 @@ import com.kowalczyk.hurtownia.model.representationModel.employees.EmployeeRepre
 import com.kowalczyk.hurtownia.model.responses.employees.EmployeeRestModel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,12 +22,14 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final UserAccountRepository userAccountRepository;
     private final WholesaleRepository wholesaleRepository;
+    private final JobPositionEmployeeRepository jobPositionEmployeeRepository;
 
 
-    public EmployeeService(EmployeeRepository employeeRepository, JobPositionEmployeeRepository jobPositionEmployeeRepository, JobPositionRepository jobPositionRepository, UserAccountRepository userAccountRepository, WholesaleRepository wholesaleRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, JobPositionEmployeeRepository jobPositionEmployeeRepository, JobPositionRepository jobPositionRepository, UserAccountRepository userAccountRepository, WholesaleRepository wholesaleRepository, JobPositionEmployeeRepository jobPositionEmployeeRepository1) {
         this.employeeRepository = employeeRepository;
         this.userAccountRepository = userAccountRepository;
         this.wholesaleRepository = wholesaleRepository;
+        this.jobPositionEmployeeRepository = jobPositionEmployeeRepository1;
     }
 
     public EmployeeRepresentationModel getById(UserAccount userAccount)
@@ -71,6 +75,24 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
+    public void deleteEmployee(Long id) {
+
+        Optional<Employee> employee = employeeRepository.findById(id);
+
+        if(employee.isPresent())
+        {
+            jobPositionEmployeeRepository.findAllByEmployeeId(employee.get().getId())
+            .forEach(job -> jobPositionEmployeeRepository.delete(job));
+
+            userAccountRepository.delete(userAccountRepository.findById(
+                    employee.get().getUserAccount().getId()).get());
+
+            employeeRepository.delete(employee.get());
+
+        }
+
+    }
+
 
 
     //methods
@@ -104,6 +126,7 @@ public class EmployeeService {
                     ,null,null);
         }
     }
+
 
 
 }

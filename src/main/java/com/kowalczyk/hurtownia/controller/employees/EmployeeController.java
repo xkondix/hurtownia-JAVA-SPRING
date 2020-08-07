@@ -97,6 +97,12 @@ public class EmployeeController {
 
     }
 
+    @DeleteMapping("employee/{id}")
+    public void deleteProduct(@PathVariable Long id)
+    {
+        employeeService.deleteEmployee(id);
+    }
+
 
 
 }

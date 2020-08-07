@@ -52,6 +52,15 @@ public class CategoryService {
         return null;
     }
 
+    public void deleteProduct(Long id) {
+
+        Optional<Category> category  = categoryRespository.findById(id);
+        if(category.isPresent())
+        {
+            categoryRespository.delete(category.get());
+        }
+
+    }
 
     //methods
 
@@ -64,5 +73,6 @@ public class CategoryService {
     {
         return productRepository.findAllByCategoryId(id);
     }
+
 
 }
