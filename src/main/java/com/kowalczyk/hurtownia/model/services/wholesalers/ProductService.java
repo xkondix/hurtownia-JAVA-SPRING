@@ -26,6 +26,7 @@ public class ProductService {
         this.categoryRespository = categoryRespository;
     }
 
+
     public List<ProductRepresentationModel> getAll(String path)
     {
         return productRepository.findAll().stream().map
@@ -49,16 +50,11 @@ public class ProductService {
         return null;
     }
 
-    public ProductRepresentationModel getByBrand(String brand)
+    public List<ProductRepresentationModel> getByBrand(String brand)
         {
-            Optional<Product> product = productRepository.findByBrand(brand);
-            if(product.isPresent())
-            {
-                return new ProductRepresentationModelAssembler
-                        ("product").toModel(product.get());
-            }
-
-            return null;
+            return productRepository.findByBrand(brand).stream().map
+                    (x -> new ProductRepresentationModelAssembler("product").toModel(x))
+                    .collect(Collectors.toList());
 
         }
 
