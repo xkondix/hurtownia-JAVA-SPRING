@@ -1,7 +1,6 @@
 package com.kowalczyk.hurtownia.model.services.employees;
 
 import com.kowalczyk.hurtownia.model.entities.employees.Employee;
-import com.kowalczyk.hurtownia.model.entities.employees.JobPositionEmployee;
 import com.kowalczyk.hurtownia.model.entities.employees.UserAccount;
 import com.kowalczyk.hurtownia.model.entities.wholesalers.Wholesale;
 import com.kowalczyk.hurtownia.model.repositories.employees.EmployeeRepository;
@@ -13,7 +12,6 @@ import com.kowalczyk.hurtownia.model.representationModel.employees.EmployeeRepre
 import com.kowalczyk.hurtownia.model.responses.employees.EmployeeRestModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +33,9 @@ public class EmployeeService {
     public EmployeeRepresentationModel getById(UserAccount userAccount)
     {
         Employee employee = employeeRepository.findByUserAccountId(userAccount.getId());
-        return new EmployeeRepresentationModel(employee,userAccount);
+        Optional<Wholesale> wholesale = wholesaleRepository
+                .findById(employee.getWholesale().getId());
+        return new EmployeeRepresentationModel(employee,userAccount, wholesale.get().getNameOfWholesale());
     }
 
     public void saveEmployee(EmployeeRestModel employeeRestModel) {
