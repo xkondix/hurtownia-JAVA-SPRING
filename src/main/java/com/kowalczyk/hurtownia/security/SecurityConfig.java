@@ -45,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers()
                 .frameOptions()
                 .sameOrigin();
+
+        //http.authorizeRequests().antMatchers(HttpMethod.GET).permitAll();
+
     }
 
     @Bean
