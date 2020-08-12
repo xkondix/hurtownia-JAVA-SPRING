@@ -39,9 +39,9 @@ public class UserAccountService implements UserDetailsService {
     }
 
     public void putUser(UserAccountRestModel userAccountRestModel, String username, PasswordEncoder passwordEncoder) {
-    UserAccount userAccount = userAccountRestModel.mapToEntity(passwordEncoder);
-    userAccount.setId(userAccountRespository.findByUsername(username).getId());
-    userAccountRespository.save(userAccount);
+        UserAccount userAccount = userAccountRestModel.mapToEntity(passwordEncoder);
+        userAccount.setId(userAccountRespository.findByUsername(username).getId());
+        userAccountRespository.save(userAccount);
     }
 
     public void saveUser(UserAccountRestModel userAccountRestModel, PasswordEncoder passwordEncoder) {
