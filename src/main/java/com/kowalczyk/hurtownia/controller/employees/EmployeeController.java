@@ -9,6 +9,7 @@ import com.kowalczyk.hurtownia.model.services.employees.EmployeeService;
 import com.kowalczyk.hurtownia.model.services.employees.JobPositionEmployeeService;
 import com.kowalczyk.hurtownia.model.services.employees.UserAccountService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,11 +20,13 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final JobPositionEmployeeService jobPositionEmployeeService;
     private final UserAccountService userAccountService;
+    private final PasswordEncoder passwordEncoder;
 
-    public EmployeeController(EmployeeService employeeService, JobPositionEmployeeService jobPositionEmployeeService, UserAccountService userAccountService) {
+    public EmployeeController(EmployeeService employeeService, JobPositionEmployeeService jobPositionEmployeeService, UserAccountService userAccountService, PasswordEncoder passwordEncoder) {
         this.employeeService = employeeService;
         this.jobPositionEmployeeService = jobPositionEmployeeService;
         this.userAccountService = userAccountService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //Employee
@@ -64,19 +67,19 @@ public class EmployeeController {
     @PostMapping("employee/userAccount")
     public void saveUserAcounnt(@RequestBody UserAccountRestModel userAccountRestModel)
     {
-        userAccountService.saveUser(userAccountRestModel);
+        userAccountService.saveUser(userAccountRestModel,passwordEncoder);
     }
 
     @PatchMapping("/employee/userAccount/{username}")
     public void patchUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
             , @PathVariable("username") String username) {
-        userAccountService.patchUser(userAccountRestModel,username);
+        userAccountService.patchUser(userAccountRestModel,username,passwordEncoder);
     }
 
     @PutMapping("/employee/userAccount/{username}")
     public void putUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
             , @PathVariable("username") String username) {
-        userAccountService.putUser(userAccountRestModel,username);
+        userAccountService.putUser(userAccountRestModel,username,passwordEncoder);
 
     }
 

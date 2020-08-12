@@ -3,13 +3,18 @@ package com.kowalczyk.hurtownia.security;
 
 import com.kowalczyk.hurtownia.model.services.employees.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.annotation.PostConstruct;
 
 
 @Configuration
@@ -24,9 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic()
                 .and()
                 .authorizeRequests()
-                //.antMatchers("/api/employee/job,/api/employee/employee")
-                //.access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/api/employee")
+                .antMatchers("/api/products")
+                .access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/api/employee","/api/categories")
                 .access("hasRole('ROLE_USER')")
                 .antMatchers("/", "/**").access("permitAll")
                 .and()
@@ -52,15 +57,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder encoder() {
-        return new MyPasswordEncoder();
+        return new BCryptPasswordEncoder(11);
+        //you can create your own password Encoder or delete this
+        //and class MyPasswordEncoder
+        //return new MyPasswordEncoder();
     }
 
+    @EventListener(ApplicationReadyEvent.class)
+    private void createFirstAdminAccountIfNotExist()
+    {
+        if (!userAccountService.ifAtLeastOneUserExists())
+        {
+            userAccountService.createFirstAdminAccount(encoder());
+        }
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-
-        auth.userDetailsService(userAccountService).passwordEncoder(encoder());
+        auth
+                .userDetailsService(userAccountService)
+                .passwordEncoder(encoder());
 
     }
 
