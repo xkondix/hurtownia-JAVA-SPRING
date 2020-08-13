@@ -41,7 +41,8 @@ public class ProductQuantityRepresentationModelAssembler extends RepresentationM
         Assert.notNull(id, "Id must not be null!");
 
         ProductQuantityRepresentationModel instance = instantiateModel(entity);
-        instance.add(linkTo(ProductController.class).slash(path).slash(id).withSelfRel());
+        instance.add(linkTo(ProductController.class).slash(path).slash("name").
+                slash(entity.getNameOfProduct().replace(" ","_")).withSelfRel());
         return instance;
     }
 

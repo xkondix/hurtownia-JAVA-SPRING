@@ -1,6 +1,7 @@
 package com.kowalczyk.hurtownia.controller.wholesalers;
 
 import com.kowalczyk.hurtownia.model.representationModel.wholesalers.CategoryRepresentationModel;
+import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.wholesalers.CategoryRestModel;
 import com.kowalczyk.hurtownia.model.services.wholesalers.CategoryService;
 import org.springframework.hateoas.CollectionModel;
@@ -27,6 +28,17 @@ public class CategoryController {
         return ResponseEntity.ok(CollectionModel.of(
                 categoryService.getAll(),
                 linkTo(methodOn(CategoryController.class).getAll()).withSelfRel()));
+    }
+
+
+    // .getByName(name.replace("_"," ")) if name have whitespace
+    // reverse change in class CategoryRepresentationModelAssembler, method -> createModelWithId
+    // HATEOAS need this
+    @GetMapping("category/name/{name}")
+    public ResponseEntity<CategoryRepresentationModel> getByName(@PathVariable String name) {
+        CategoryRepresentationModel category = categoryService.getByName(name.replace("_"," "));
+        category.add(linkTo(methodOn(CategoryController.class).getAll()).withSelfRel());
+        return ResponseEntity.ok(category);
     }
 
     @PostMapping("category")

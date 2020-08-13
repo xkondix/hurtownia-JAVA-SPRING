@@ -1,10 +1,12 @@
 package com.kowalczyk.hurtownia.controller.wholesalers;
 
 import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductQuantityRepresentationModel;
+import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepresentationModel;
 import com.kowalczyk.hurtownia.model.representationModel.wholesalers.WholesaleRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.wholesalers.WholesaleRestModel;
 import com.kowalczyk.hurtownia.model.services.wholesalers.WholesaleService;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,5 +50,7 @@ public class WholesaleController {
                 wholesaleService.getAllProduct(),
                 linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
     }
+
+
 
 }

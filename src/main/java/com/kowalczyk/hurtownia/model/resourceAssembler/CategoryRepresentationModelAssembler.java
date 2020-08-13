@@ -43,7 +43,8 @@ public class CategoryRepresentationModelAssembler extends
         Assert.notNull(id, "Id must not be null!");
 
         CategoryRepresentationModel instance = instantiateModel(entity);
-        instance.add(linkTo(ProductController.class).slash(path).slash(id).withSelfRel());
+        instance.add(linkTo(CategoryController.class).slash(path).slash("name").
+                slash(entity.getNameOfCategory().replace(" ","_")).withSelfRel());
         return instance;
     }
 

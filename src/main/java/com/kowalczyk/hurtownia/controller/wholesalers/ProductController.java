@@ -48,9 +48,12 @@ public class ProductController {
                 linkTo(methodOn(ProductController.class).getAll()).withSelfRel()));
     }
 
+    // .getByName(name.replace("_"," ")) if name have whitespace
+    // reverse change in class ProductRepresentationModelAssembler, method -> createModelWithId
+    // HATEOAS need this
     @GetMapping("product/name/{name}")
     public ResponseEntity<ProductRepresentationModel> getByName(@PathVariable String name) {
-        ProductRepresentationModel product = productService.getByName(name);
+        ProductRepresentationModel product = productService.getByName(name.replace("_"," "));
         product.add(linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
         return ResponseEntity.ok(product);
     }

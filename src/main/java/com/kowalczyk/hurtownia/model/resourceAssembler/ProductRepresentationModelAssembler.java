@@ -35,7 +35,8 @@ public class ProductRepresentationModelAssembler extends
         Assert.notNull(id, "Id must not be null!");
 
         ProductRepresentationModel instance = instantiateModel(entity);
-        instance.add(linkTo(ProductController.class).slash(path).slash(id).withSelfRel());
+        instance.add(linkTo(ProductController.class).slash(path).slash("name").
+                slash(entity.getNameOfProduct().replace(" ","_")).withSelfRel());
         return instance;
     }
 }
