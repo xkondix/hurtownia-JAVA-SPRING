@@ -41,7 +41,8 @@ public class EmployeeService {
     }
 
     public void saveEmployee(EmployeeRestModel employeeRestModel) {
-        employeeRepository.save(mapToEnity(employeeRestModel));
+        Employee employee = mapToEnity(employeeRestModel);
+        employeeRepository.save(employee);
     }
 
     public void patchEmployee(EmployeeRestModel employeeRestModel, Long id) {
@@ -77,7 +78,7 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public void deleteEmployee(Long id) {
+    public void deleteEmployee(Long id) throws Exception {
 
         Optional<Employee> employee = employeeRepository.findById(id);
 
@@ -91,6 +92,10 @@ public class EmployeeService {
 
             employeeRepository.delete(employee.get());
 
+        }
+        else
+        {
+            throw new Exception();
         }
 
     }

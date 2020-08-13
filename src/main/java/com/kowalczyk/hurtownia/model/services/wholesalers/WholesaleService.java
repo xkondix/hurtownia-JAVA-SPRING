@@ -48,8 +48,8 @@ public class WholesaleService {
     }
 
     public void saveWholesale(WholesaleRestModel wholesaleRestModel) {
-
-        wholesaleRepository.save(wholesaleRestModel.mapToEnity());
+        Wholesale wholesale = wholesaleRestModel.mapToEnity();
+        wholesaleRepository.save(wholesale);
 
     }
 

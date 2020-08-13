@@ -37,6 +37,8 @@ public class JobPositionService {
     }
 
     public void save(JobPositionRestModel jobPositionRestModel) {
-        jobPositionRepository.save(jobPositionRestModel.mapToEntity());
+
+        JobPosition jobPosition = jobPositionRestModel.mapToEntity();
+        jobPositionRepository.save(jobPosition);
     }
 }

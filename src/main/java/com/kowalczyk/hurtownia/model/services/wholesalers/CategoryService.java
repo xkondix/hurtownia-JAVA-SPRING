@@ -54,12 +54,16 @@ public class CategoryService {
         return null;
     }
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(Long id) throws Exception {
 
         Optional<Category> category  = categoryRespository.findById(id);
         if(category.isPresent())
         {
             categoryRespository.delete(category.get());
+        }
+        else
+        {
+            throw new Exception();
         }
 
     }

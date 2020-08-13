@@ -34,8 +34,9 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public void saveProduct(ProductRestModel product) {
-        productRepository.save(mapToEntity(product));
+    public void saveProduct(ProductRestModel productRestModel) {
+        Product product = mapToEntity(productRestModel);
+        productRepository.save(product);
     }
 
     public ProductRepresentationModel getById(Long id)
@@ -101,11 +102,15 @@ public class ProductService {
     }
 
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(Long id) throws Exception {
         Optional<Product> product = productRepository.findById(id);
         if(product.isPresent())
         {
             productRepository.delete(product.get());
+        }
+        else
+        {
+            throw new Exception();
         }
     }
 

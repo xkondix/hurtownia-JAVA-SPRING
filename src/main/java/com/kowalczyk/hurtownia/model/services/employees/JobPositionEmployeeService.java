@@ -26,7 +26,8 @@ public class JobPositionEmployeeService {
 
     public void saveJob(JobPositionEmployeeRestModel jobPositionEmployeeRestModel)
     {
-        jobPositionEmployeeRepository.save(mapToEntiti(jobPositionEmployeeRestModel));
+        JobPositionEmployee jobPositionEmployee = mapToEntiti(jobPositionEmployeeRestModel);
+        jobPositionEmployeeRepository.save(jobPositionEmployee);
     }
 
     public void putJob(JobPositionEmployeeRestModel jobPositionEmployeeRestModel,Long employeeId,Long jobId)

@@ -45,8 +45,11 @@ public class UserAccountService implements UserDetailsService {
     }
 
     public void saveUser(UserAccountRestModel userAccountRestModel, PasswordEncoder passwordEncoder) {
-        userAccountRespository.save(userAccountRestModel.mapToEntity(passwordEncoder));
+        UserAccount userAccount = userAccountRestModel.mapToEntity(passwordEncoder);
+        userAccountRespository.save(userAccount);
     }
+
+    //methods
 
     public Boolean ifAtLeastOneUserExists() {
         //TODO ifAnyoneExist, this method will work very slowly with a large users

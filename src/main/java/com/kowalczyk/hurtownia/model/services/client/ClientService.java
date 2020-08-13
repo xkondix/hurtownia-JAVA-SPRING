@@ -29,8 +29,9 @@ public class ClientService {
     {
         Address address =clientRestModel.mapToEnityAddres();
         ContactDetails contactDetails = clientRestModel.mapToEnityContactDetails();
+        Client client = new Client(clientRestModel.getTypeOfClient(), address, contactDetails);
         addressRepository.save(address);
         contactDetailsRepository.save(contactDetails);
-        clientRepository.save(new Client(COMPANY, address, contactDetails));
+        clientRepository.save(client);
     }
 }
