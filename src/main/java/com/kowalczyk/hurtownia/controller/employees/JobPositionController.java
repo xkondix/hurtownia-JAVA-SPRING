@@ -3,6 +3,8 @@ package com.kowalczyk.hurtownia.controller.employees;
 import com.kowalczyk.hurtownia.model.representationModel.employees.JobPositionRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.employees.JobPositionRestModel;
 import com.kowalczyk.hurtownia.model.services.employees.JobPositionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,22 +21,38 @@ private final JobPositionService jobPositionService;
     }
 
     @GetMapping("positions")
-    public List<JobPositionRepresentationModel> getPositions()
+    public ResponseEntity<List<JobPositionRepresentationModel>> getPositions()
     {
-        return jobPositionService.getAll();
+        return ResponseEntity.ok(jobPositionService.getAll());
     }
 
 
     @GetMapping("position/{id}")
-    public JobPositionRepresentationModel getById(@PathVariable Long id)
+    public ResponseEntity<JobPositionRepresentationModel> getById(@PathVariable Long id)
     {
-        return jobPositionService.getById(id);
+
+        JobPositionRepresentationModel jobPositionRepresentationModel
+                = jobPositionService.getById(id);
+        if(jobPositionRepresentationModel==null)
+        {
+            return new ResponseEntity<JobPositionRepresentationModel>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(jobPositionRepresentationModel);
+
     }
 
     @PostMapping("position")
-    public void saveJob(@RequestBody JobPositionRestModel jobPositionRestModel)
+    public ResponseEntity<?> saveJob(@RequestBody JobPositionRestModel jobPositionRestModel)
     {
-        jobPositionService.save(jobPositionRestModel);
+        try{
+            jobPositionService.save(jobPositionRestModel);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
 

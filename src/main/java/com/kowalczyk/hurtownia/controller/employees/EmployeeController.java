@@ -8,9 +8,13 @@ import com.kowalczyk.hurtownia.model.responses.employees.UserAccountRestModel;
 import com.kowalczyk.hurtownia.model.services.employees.EmployeeService;
 import com.kowalczyk.hurtownia.model.services.employees.JobPositionEmployeeService;
 import com.kowalczyk.hurtownia.model.services.employees.UserAccountService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -32,77 +36,174 @@ public class EmployeeController {
     //Employee
 
     @GetMapping("employee")
-    public EmployeeRepresentationModel getUser(
+    public ResponseEntity<EmployeeRepresentationModel> getUser(
             @AuthenticationPrincipal UserAccount userAccount)
     {
-        return employeeService.getById(userAccount);
+        EmployeeRepresentationModel employeeRepresentationModel =
+                employeeService.getById(userAccount);
+
+        if(employeeRepresentationModel==null)
+        {
+            return new ResponseEntity<EmployeeRepresentationModel>(HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(employeeRepresentationModel);
+
+    }
+
+    @GetMapping("employees")
+    public ResponseEntity<List<EmployeeRepresentationModel>> getAllEmployees()
+    {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @PostMapping("employee/employee")
-    public void saveEmployee(@RequestBody EmployeeRestModel employeeRestModel)
+    public ResponseEntity<?> saveEmployee(@RequestBody EmployeeRestModel employeeRestModel)
     {
-        employeeService.saveEmployee(employeeRestModel);
+        try{
+            employeeService.saveEmployee(employeeRestModel);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PatchMapping("employee/employee/{id}")
-    public void patchUpdateEmployee(@RequestBody EmployeeRestModel employeeRestModel
+    public ResponseEntity<?> patchUpdateEmployee(@RequestBody EmployeeRestModel employeeRestModel
             , @PathVariable("id") Long id) {
-        employeeService.patchEmployee(employeeRestModel,id);
+        try{
+            employeeService.patchEmployee(employeeRestModel,id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PutMapping("employee/employee/{id}")
-    public void putUpdateEmployee(@RequestBody EmployeeRestModel employeeRestModel
+    public ResponseEntity<?> putUpdateEmployee(@RequestBody EmployeeRestModel employeeRestModel
             , @PathVariable("id") Long id) {
-        employeeService.putEmployee(employeeRestModel,id);
+        try{
+            employeeService.putEmployee(employeeRestModel,id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @DeleteMapping("employee/{id}")
-    public void deleteProduct(@PathVariable Long id)
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id)
     {
-        employeeService.deleteEmployee(id);
+        try{
+            employeeService.deleteEmployee(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.NOT_FOUND);
+
+        }
     }
 
     //UserAccount
 
     @PostMapping("employee/userAccount")
-    public void saveUserAcounnt(@RequestBody UserAccountRestModel userAccountRestModel)
+    public ResponseEntity<?> saveUserAcounnt(@RequestBody UserAccountRestModel userAccountRestModel)
     {
-        userAccountService.saveUser(userAccountRestModel,passwordEncoder);
+        try{
+            userAccountService.saveUser(userAccountRestModel,passwordEncoder);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PatchMapping("employee/userAccount/{username}")
-    public void patchUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
+    public ResponseEntity<?> patchUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
             , @PathVariable("username") String username) {
-        userAccountService.patchUser(userAccountRestModel,username,passwordEncoder);
+        try{
+            userAccountService.patchUser(userAccountRestModel,username,passwordEncoder);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PutMapping("employee/userAccount/{username}")
-    public void putUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
+    public ResponseEntity<?> putUpdateUser(@RequestBody UserAccountRestModel userAccountRestModel
             , @PathVariable("username") String username) {
-        userAccountService.putUser(userAccountRestModel,username,passwordEncoder);
+
+        try{
+            userAccountService.putUser(userAccountRestModel,username,passwordEncoder);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
 
     }
 
     //JobPositionEmployee
 
     @PostMapping("employee/position")
-    public void saveJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel)
+    public ResponseEntity<?> saveJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel)
     {
-        jobPositionEmployeeService.saveJob(jobPositionEmployeeRestModel);
+        try{
+            jobPositionEmployeeService.saveJob(jobPositionEmployeeRestModel);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PatchMapping("employee/position/{jobId}/conf/{employeeId}")
-    public void patchUpdateJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel
+    public ResponseEntity<?> patchUpdateJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel
             , @PathVariable("employeeId") Long employeeId
             , @PathVariable("jobId") Long jobId) {
-        jobPositionEmployeeService.patchJob(jobPositionEmployeeRestModel,employeeId,jobId);
+
+        try{
+            jobPositionEmployeeService.patchJob(jobPositionEmployeeRestModel,employeeId,jobId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PutMapping("employee/position/{jobId}/conf/{employeeId}")
-    public void putUpdateJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel
+    public ResponseEntity<?> putUpdateJobPositionEmployee(@RequestBody JobPositionEmployeeRestModel jobPositionEmployeeRestModel
             , @PathVariable("employeeId") Long employeeId
             , @PathVariable("jobId") Long jobId) {
-        jobPositionEmployeeService.putJob(jobPositionEmployeeRestModel,employeeId,jobId);
+        try{
+            jobPositionEmployeeService.putJob(jobPositionEmployeeRestModel,employeeId,jobId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
 
     }
 

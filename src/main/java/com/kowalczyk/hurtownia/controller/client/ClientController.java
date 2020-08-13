@@ -2,6 +2,8 @@ package com.kowalczyk.hurtownia.controller.client;
 
 import com.kowalczyk.hurtownia.model.responses.client.ClientRestModel;
 import com.kowalczyk.hurtownia.model.services.client.ClientService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,9 +18,18 @@ public class ClientController {
     }
 
     @PostMapping("/client")
-    public void save(@RequestBody ClientRestModel clientRestModel)
+    public ResponseEntity<?> save(@RequestBody ClientRestModel clientRestModel)
     {
-        clientService.save(clientRestModel);
+        try{
+            clientService.save(clientRestModel);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
+
     }
 
 

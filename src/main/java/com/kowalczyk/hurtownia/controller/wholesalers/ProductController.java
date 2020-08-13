@@ -4,6 +4,7 @@ import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepr
 import com.kowalczyk.hurtownia.model.responses.wholesalers.ProductRestModel;
 import com.kowalczyk.hurtownia.model.services.wholesalers.ProductService;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +31,25 @@ public class ProductController {
     }
 
     @PostMapping("product")
-    public void addProduct(@RequestBody ProductRestModel product) {
-        productService.saveProduct(product);
+    public ResponseEntity<?> addProduct(@RequestBody ProductRestModel product) {
+        try{
+            productService.saveProduct(product);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @GetMapping("product/{id}")
     public ResponseEntity<ProductRepresentationModel> getById(@PathVariable Long id) {
         ProductRepresentationModel product = productService.getById(id);
+        if(product==null)
+        {
+            return new ResponseEntity<ProductRepresentationModel>(HttpStatus.NOT_FOUND);
+        }
         product.add(linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
         return ResponseEntity.ok(product);
     }
@@ -54,27 +67,55 @@ public class ProductController {
     @GetMapping("product/name/{name}")
     public ResponseEntity<ProductRepresentationModel> getByName(@PathVariable String name) {
         ProductRepresentationModel product = productService.getByName(name.replace("_"," "));
+        if(product==null)
+        {
+            return new ResponseEntity<ProductRepresentationModel>(HttpStatus.NOT_FOUND);
+        }
         product.add(linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
         return ResponseEntity.ok(product);
     }
 
     @PatchMapping("product/{id}")
-    public void patchProduct(@RequestBody ProductRestModel productRestModel
+    public ResponseEntity<?> patchProduct(@RequestBody ProductRestModel productRestModel
             , @PathVariable("employeeId") Long id) {
-        productService.patchProduct(productRestModel,id);
+        try{
+            productService.patchProduct(productRestModel,id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PutMapping("product/{id}")
-    public void putProduct(@RequestBody ProductRestModel productRestModel
+    public ResponseEntity<?> putProduct(@RequestBody ProductRestModel productRestModel
             , @PathVariable("employeeId") Long id)
     {
-        productService.putProduct(productRestModel,id);
+        try{
+            productService.putProduct(productRestModel,id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @DeleteMapping("product/{id}")
-    public void deleteProduct(@PathVariable Long id)
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id)
     {
-        productService.deleteProduct(id);
+        try{
+            productService.deleteProduct(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.NOT_FOUND);
+
+        }
     }
 
 

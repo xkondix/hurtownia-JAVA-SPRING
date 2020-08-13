@@ -12,7 +12,9 @@ import com.kowalczyk.hurtownia.model.representationModel.employees.EmployeeRepre
 import com.kowalczyk.hurtownia.model.responses.employees.EmployeeRestModel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -93,6 +95,15 @@ public class EmployeeService {
 
     }
 
+    public List<EmployeeRepresentationModel> getAllEmployees() {
+
+        return employeeRepository.findAll().stream().map(employee ->
+                new EmployeeRepresentationModel(
+                        employee,employee.getUserAccount(),employee.getWholesale().getNameOfWholesale()))
+                .collect(Collectors.toList());
+
+    }
+
 
 
     //methods
@@ -126,7 +137,6 @@ public class EmployeeService {
                     ,null,null);
         }
     }
-
 
 
 }

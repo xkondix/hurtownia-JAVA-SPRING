@@ -6,6 +6,7 @@ import com.kowalczyk.hurtownia.model.representationModel.wholesalers.WholesaleRe
 import com.kowalczyk.hurtownia.model.responses.wholesalers.WholesaleRestModel;
 import com.kowalczyk.hurtownia.model.services.wholesalers.WholesaleService;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,29 +27,44 @@ public class WholesaleController {
     }
 
     @GetMapping("wholesale")
-    public List<WholesaleRepresentationModel> getAll()
+    public ResponseEntity<List<WholesaleRepresentationModel>> getAll()
     {
-        return wholesaleService.getAll();
+        return ResponseEntity.ok(
+                wholesaleService.getAll());
     }
 
     @GetMapping("wholesale/{id}")
-    public WholesaleRepresentationModel getById(@PathVariable Long id)
+    public ResponseEntity<WholesaleRepresentationModel> getById(@PathVariable Long id)
     {
-        return wholesaleService.getById(id);
+        WholesaleRepresentationModel wholesaleRepresentationModel
+                = wholesaleService.getById(id);
+        if(wholesaleRepresentationModel==null)
+        {
+            return new ResponseEntity<WholesaleRepresentationModel>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(wholesaleRepresentationModel);
     }
 
     @PostMapping("wholesale")
-    public void saveWholesale(@RequestBody WholesaleRestModel wholesaleRestModel)
+    public ResponseEntity<?> saveWholesale(@RequestBody WholesaleRestModel wholesaleRestModel)
     {
-        wholesaleService.saveWholesale(wholesaleRestModel);
+        try{
+            wholesaleService.saveWholesale(wholesaleRestModel);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @GetMapping("wholesale/getAllProduct")
-    public CollectionModel<ProductQuantityRepresentationModel> getAllProduct()
+    public ResponseEntity<CollectionModel<ProductQuantityRepresentationModel>> getAllProduct()
     {
-        return CollectionModel.of(
+        return ResponseEntity.ok(CollectionModel.of(
                 wholesaleService.getAllProduct(),
-                linkTo(methodOn(ProductController.class).getAll()).withSelfRel());
+                linkTo(methodOn(WholesaleController.class).getAll()).withSelfRel()));
     }
 
 

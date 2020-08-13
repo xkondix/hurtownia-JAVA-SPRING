@@ -1,10 +1,10 @@
 package com.kowalczyk.hurtownia.controller.wholesalers;
 
 import com.kowalczyk.hurtownia.model.representationModel.wholesalers.CategoryRepresentationModel;
-import com.kowalczyk.hurtownia.model.representationModel.wholesalers.ProductRepresentationModel;
 import com.kowalczyk.hurtownia.model.responses.wholesalers.CategoryRestModel;
 import com.kowalczyk.hurtownia.model.services.wholesalers.CategoryService;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -37,28 +37,52 @@ public class CategoryController {
     @GetMapping("category/name/{name}")
     public ResponseEntity<CategoryRepresentationModel> getByName(@PathVariable String name) {
         CategoryRepresentationModel category = categoryService.getByName(name.replace("_"," "));
+        if(category==null)
+        {
+            return new ResponseEntity<CategoryRepresentationModel>(HttpStatus.NOT_FOUND);
+        }
         category.add(linkTo(methodOn(CategoryController.class).getAll()).withSelfRel());
         return ResponseEntity.ok(category);
     }
 
     @PostMapping("category")
-    public void saveCategory(@RequestBody CategoryRestModel category)
+    public ResponseEntity<?> saveCategory(@RequestBody CategoryRestModel category)
     {
-        categoryService.saveCategory(category);
+        try{
+            categoryService.saveCategory(category);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @GetMapping("category/{id}")
     public ResponseEntity<CategoryRepresentationModel> getById(@PathVariable Long id)
     {
         CategoryRepresentationModel category = categoryService.getById(id);
+        if(category==null)
+        {
+            return new ResponseEntity<CategoryRepresentationModel>(HttpStatus.NOT_FOUND);
+        }
         category.add(linkTo(methodOn(CategoryController.class).getAll()).withSelfRel());
         return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("category/{id}")
-    public void deleteCategory(@PathVariable Long id)
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id)
     {
-        categoryService.deleteProduct(id);
+        try{
+            categoryService.deleteProduct(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(e,HttpStatus.NOT_FOUND);
+
+        }
     }
 
 
