@@ -51,16 +51,12 @@ public class OrderSupplyService {
     }
 
 
-    public void save(OrderSupplyRestModel orderSupplyRestModel) {
+    public void save(OrderSupplyRestModel orderSupplyRestModel) throws NotFoundException {
 
         OrderSupply orderSupply = mapToEntity(orderSupplyRestModel);
-        if(orderSupply.equals(null))
+        if(orderSupply==null)
         {
-            try {
-                throw new NotFoundException("not found");
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
+            throw new NullPointerException("bad data");
         }
 
         orderSupplyRepository.save(orderSupply);
@@ -71,6 +67,10 @@ public class OrderSupplyService {
         else{
             if(!orderSupply.getWholesale().equals(null)) {
                 saveSupply(orderSupply, orderSupplyRestModel);
+            }
+            else
+            {
+                throw new NotFoundException("not found wholesale id");
             }
         }
 
@@ -93,59 +93,55 @@ public class OrderSupplyService {
     private void saveOrder(OrderSupply orderSupply
             , OrderSupplyRestModel orderSupplyRestModel) {
 
+
         final Map<Product,Long> wholesaleProductEmail = orderSupplyRestModel.getProductsCount()
                 .entrySet().stream()
                 .map(product -> productRepository.findByNameOfProduct(product.getKey()).get()).collect(Collectors.toMap(
                         key -> key
                         ,value -> orderSupplyRestModel.getProductsCount().get(value.getNameOfProduct())));
-
         List<Wholesale> wholesales = wholesaleRepository.findAll();
         Map<String,Long> order = orderSupplyRestModel.getProductsCount();
         int i = wholesales.size();
+
+
         while(order.size()>0 && i>0 ){
 
-             Wholesale wholesale = wholesales.stream()
-                     .collect(Collectors.toMap(Function.identity(),
-                             x -> x.getProducts().stream()
-                                     .filter(y -> y.count(orderSupplyRestModel.getProductsCount()))
-                                     .count()))
-                     .entrySet().stream()
-                     .max((entry1, entry2) -> entry1.getValue() >= entry2.getValue()
-                             ? 1 : -1).get().getKey();
+            Wholesale wholesale = takeTheWholesaleWithTheLargestQuantityOfProducts(
+                    checkWhichWholesaleHasTheMostProductsFromTheOrder(wholesales,orderSupplyRestModel));
 
 
-             wholesales.remove(wholesale);
-             List<WholesaleProduct> wholesaleProducts = wholesale.getProducts();
+            wholesales.remove(wholesale);
+            List<WholesaleProduct> wholesaleProducts = wholesale.getProducts();
 
-             order = order.entrySet().stream().filter( product -> {
-                 Optional<WholesaleProduct> wholesaleProductOptional
-                         = wholesaleProducts.stream().filter(
-                         x -> (x.getProduct().getNameOfProduct().equals(product.getKey())
-                         )).findFirst();
+            order = order.entrySet().stream().filter( product -> {
+                Optional<WholesaleProduct> wholesaleProductOptional
+                        = wholesaleProducts.stream().filter(
+                        x -> (x.getProduct().getNameOfProduct().equals(product.getKey())
+                        )).findFirst();
 
 
-                 if(wholesaleProductOptional.isPresent())
-                 {
-                     Long quanity = saveOrderWholesaleProduct(wholesaleProductOptional.get()
-                             ,product.getValue(),orderSupply);
-                     if(quanity==0) {
-                         return false;
-                     }
-                     else
-                     {
-                         product.setValue(quanity);
-                         return true;
-                     }
-                 }
-                 return true;
+                if(wholesaleProductOptional.isPresent())
+                {
+                    Long quanity = saveOrderWholesaleProduct(wholesaleProductOptional.get()
+                            ,product.getValue(),orderSupply);
+                    if(quanity==0) {
+                        return false;
+                    }
+                    else
+                    {
+                        product.setValue(quanity);
+                        return true;
+                    }
+                }
+                return true;
 
-             }).collect(Collectors.toMap(
-                     key -> key.getKey(),
-                     val -> val.getValue()
-             ));
+            }).collect(Collectors.toMap(
+                    key -> key.getKey(),
+                    val -> val.getValue()
+            ));
 
-         i--;
-         }
+            i--;
+        }
 
         sendEmail(wholesaleProductEmail,orderSupply,
                 clientRepository.findById(orderSupplyRestModel.getClientid()).get());
@@ -175,7 +171,7 @@ public class OrderSupplyService {
                 if(wholesaleProductOptional.isPresent())
                 {
                     saveSupplyWholesaleProuct(wholesaleProductOptional.get()
-                    ,product.getValue(),orderSupply);
+                            ,product.getValue(),orderSupply);
                 }
                 else
                 {
@@ -197,6 +193,22 @@ public class OrderSupplyService {
                         product, wholesaleProduct,orderSupply));
     }
 
+    private Map<Wholesale,Long> checkWhichWholesaleHasTheMostProductsFromTheOrder(List<Wholesale> wholesales
+            , OrderSupplyRestModel orderSupplyRestModel)
+    {
+        return wholesales.stream()
+                .collect(Collectors.toMap(Function.identity(),
+                        x -> x.getProducts().stream()
+                                .filter(y -> y.count(orderSupplyRestModel.getProductsCount()))
+                                .count()));
+    }
+
+    private Wholesale takeTheWholesaleWithTheLargestQuantityOfProducts(Map<Wholesale,Long> map)
+    {
+        return map.entrySet().stream()
+                .max((entry1, entry2) -> entry1.getValue() >= entry2.getValue() ? 1 : -1).get().getKey();
+    }
+
     private Long saveOrderWholesaleProduct(WholesaleProduct wholesaleProduct, Long product, OrderSupply orderSupply)
     {
         Long quanity = 0l;
@@ -213,7 +225,7 @@ public class OrderSupplyService {
         wholesaleProductRepository.save(wholesaleProduct);
         orderSupplyWholesaleProductRepository.save(
                 new OrderSupllyWholesaleProduct(
-                        quanity.equals(0) ? product : quanity
+                        quanity==0 ? product : product-quanity
                         ,wholesaleProduct, orderSupply));
 
 
